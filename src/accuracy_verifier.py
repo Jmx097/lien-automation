@@ -7,7 +7,7 @@ import re
 import logging
 from typing import Dict, List, Tuple
 from dataclasses import dataclass
-from field_mapper import MappedRecord, MappedField
+from .field_mapper import MappedRecord, MappedField
 
 logger = logging.getLogger(__name__)
 
