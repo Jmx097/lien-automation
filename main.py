@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Federal Tax Lien Extraction Pipeline - Main Entry Point
 Production-grade Cloud Function for automated lien data extraction
@@ -154,16 +155,7 @@ def main(request):
     {
         "success": true,
         "timestamp": "2024-02-15T12:00:00",
-        "results": [
-            {
-                "site_id": "12",
-                "records_found": 5,
-                "records_processed": 5,
-                "records_written": 3,
-                "duplicates_skipped": 2,
-                "errors": []
-            }
-        ]
+        "results": [...]
     }
     """
     try:
