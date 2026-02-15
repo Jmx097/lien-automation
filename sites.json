@@ -1,0 +1,31 @@
+{
+  "sites": [
+    {
+      "id": 20,
+      "name": "CA SOS",
+      "state": "CA",
+      "county": "California SOS",
+      "liability_type": "IRS",
+      "base_url": "https://www.sos.ca.gov/business-programs/bizfile/search-online",
+      "enabled": true
+    },
+    {
+      "id": 10,
+      "name": "IL Cook County",
+      "state": "IL",
+      "county": "Cook County",
+      "liability_type": "IRS",
+      "base_url": "https://crs.cookcountyclerkil.gov/Search",
+      "enabled": true
+    },
+    {
+      "id": 12,
+      "name": "NYC ACRIS",
+      "state": "NY",
+      "county": "New York City",
+      "liability_type": "IRS",
+      "base_url": "https://a836-acris.nyc.gov/CP/",
+      "enabled": true
+    }
+  ]
+}
