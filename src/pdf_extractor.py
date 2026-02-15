@@ -204,9 +204,9 @@ class FieldExtractor:
     ]
 
     TAXPAYER_NAME_PATTERNS = [
-        # Use double-quoted raw strings so apostrophes inside the class are safe
-        r"NAME\s+OF\s+TAXPAYER\s*[:\-]?\s*([\w\s\-',.]+)",
-        r"TAXPAYER\s*[:\-]?\s*([\w\s\-',.]+)",
+        # Use double-quoted raw strings - avoid quotes in char class
+        r"NAME\s+OF\s+TAXPAYER\s*[:\-]?\s*([\w\s\-.]+)",
+        r"TAXPAYER\s*[:\-]?\s*([\w\s\-.]+)",
     ]
 
     ADDRESS_PATTERN = (
