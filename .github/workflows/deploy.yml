@@ -61,7 +61,7 @@ jobs:
           --memory 2Gi \
           --timeout 300s \
           --set-env-vars SHEETS_ID=${{ secrets.SHEETS_ID }} \
-          --set-secrets GOOGLE_SERVICE_ACCOUNT_JSON=service-account-key:latest
+          --set-secrets GOOGLE_SERVICE_ACCOUNT_JSON=service-account-key:latest,SCRAPINGBEE_API_KEY=scrapingbee-api-key:latest
 
     - name: Get Service URL
       run: |
