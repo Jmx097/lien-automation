@@ -182,7 +182,14 @@ class CAUCCScraper:
             
         # Wait for results to load
         await self.page.wait_for_load_state("networkidle")
+        print("DEBUG: Page loaded, waiting for results...")
         await asyncio.sleep(5)  # Give time for results to render
+        
+        # Debug: Check page title and URL
+        title = await self.page.title()
+        url = self.page.url
+        print(f"DEBUG: Page title: {title}")
+        print(f"DEBUG: Page URL: {url}")
         
     async def get_results_count(self) -> int:
         """Get number of search results"""
@@ -206,7 +213,27 @@ class CAUCCScraper:
         
         try:
             # Find all result rows (actual site uses table tbody tr)
-            result_rows = await self.page.locator("table tbody tr").all()
+            # First, check if table exists
+            tables = await self.page.locator("table").all()
+            print(f"DEBUG: Found {len(tables)} tables on page")
+            
+            # Try different selectors
+            selectors_to_try = [
+                "table tbody tr",
+                "table tr",
+                ".div-table tr",
+                "[class*='table'] tr",
+                "tbody tr"
+            ]
+            
+            result_rows = []
+            for selector in selectors_to_try:
+                rows = await self.page.locator(selector).all()
+                print(f"DEBUG: Selector '{selector}' found {len(rows)} rows")
+                if len(rows) > 0 and len(result_rows) == 0:
+                    result_rows = rows
+                    print(f"DEBUG: Using selector '{selector}'")
+            
             print(f"Found {len(result_rows)} result rows")
             
             for i, row in enumerate(result_rows[:max_results]):
