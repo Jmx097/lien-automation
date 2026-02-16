@@ -1,0 +1,48 @@
+name: Deploy to Cloud Functions
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v2
+
+    - name: Create env.yaml
+      run: |
+        cat > env.yaml << EOF
+        SHEETS_ID: ${{ secrets.SHEETS_ID }}
+        EOF
+
+    - name: Deploy Function
+      run: |
+        gcloud functions deploy lien-extraction \
+          --runtime python311 \
+          --trigger-http \
+          --entry-point main \
+          --memory 1GiB \
+          --timeout 300s \
+          --region us-central1 \
+          --env-vars-file env.yaml \
+          --set-secrets GOOGLE_SERVICE_ACCOUNT_JSON=service-account-key:latest
