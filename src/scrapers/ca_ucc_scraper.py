@@ -96,49 +96,52 @@ class CAUCCScraper:
         """Click Advanced search link"""
         print("Clicking Advanced search...")
         try:
-            # Use get_by_role for more reliable selection
-            advanced_button = self.page.get_by_role("button", name="Advanced")
+            # Use CSS class selector based on actual site HTML
+            advanced_button = self.page.locator("button.advanced-search-toggle")
             if await advanced_button.is_visible():
                 await advanced_button.click()
                 await self.random_delay()
                 print("Advanced search opened")
             else:
-                print("Advanced button not visible")
+                print("Advanced button not visible, trying fallback...")
+                # Fallback: try by text content
+                await self.page.get_by_text("Advanced", exact=False).click()
         except Exception as e:
             print(f"Note: Could not click Advanced: {e}")
             
-    async def fill_search_criteria(self, from_date: str, to_date: str):
+    async def fill_search_criteria(self, from_date: str = None, to_date: str = None):
         """
         Fill in search criteria
-        from_date/to_date format: MM/DD/YYYY
+        Defaults to last 7 days if not specified
         """
-        print(f"Filling search criteria: IRS, {from_date} to {to_date}")
+        from datetime import datetime, timedelta
         
-        # Wait a moment for advanced panel to open
+        # Calculate last 7 days if not provided
+        if not from_date or not to_date:
+            today = datetime.now()
+            week_ago = today - timedelta(days=7)
+            to_date = today.strftime("%m/%d/%Y")
+            from_date = week_ago.strftime("%m/%d/%Y")
+        
+        print(f"Filling search criteria: 'internal revenue service', {from_date} to {to_date}")
+        
+        # Wait for advanced panel to open
         await asyncio.sleep(2)
         
-        # Fill "Internal Revenue Service" in party field
+        # Fill search box with "internal revenue service"
         try:
-            # Try to find by placeholder or label
-            party_field = self.page.get_by_placeholder("Name", exact=False)
-            if await party_field.count() > 0:
-                await party_field.first.fill("Internal Revenue Service")
-                print("Filled party field with 'Internal Revenue Service'")
-            else:
-                # Try any visible text input
-                inputs = await self.page.locator("input[type=text]").all()
-                for inp in inputs:
-                    if await inp.is_visible():
-                        await inp.fill("Internal Revenue Service")
-                        print("Filled first visible text input with 'Internal Revenue Service'")
-                        break
-                    
+            # Find the search input (usually first visible text input)
+            inputs = await self.page.locator("input[type=text]").all()
+            for inp in inputs:
+                if await inp.is_visible():
+                    await inp.fill("internal revenue service")
+                    print("Filled search box with 'internal revenue service'")
+                    break
         except Exception as e:
-            print(f"Warning: Could not fill party field: {e}")
-            
-        # Fill date range
+            print(f"Warning: Could not fill search box: {e}")
+        
+        # Fill date range (File Date Start/End)
         try:
-            # Look for date inputs by type
             date_inputs = await self.page.locator("input[type=date]").all()
             if len(date_inputs) >= 2:
                 # Convert MM/DD/YYYY to YYYY-MM-DD for HTML date inputs
@@ -149,13 +152,15 @@ class CAUCCScraper:
                 
                 await date_inputs[0].fill(from_iso)
                 await date_inputs[1].fill(to_iso)
-                print(f"Filled date range: {from_date} to {to_date}")
+                print(f"Filled File Date range: {from_date} to {to_date}")
             else:
                 print("Warning: Could not find date range fields")
-                
         except Exception as e:
             print(f"Warning: Could not fill date fields: {e}")
-            
+        
+        # Status and File Type should default to "All" (no change needed)
+        print("Filters applied: Status=All, File Type=All")
+        
         await self.random_delay()
         
     async def submit_search(self):
@@ -200,19 +205,38 @@ class CAUCCScraper:
         records = []
         
         try:
-            # Find all result rows
-            result_rows = await self.page.locator("tr, .result-row, [class*=result]").all()
+            # Find all result rows (actual site uses table tbody tr)
+            result_rows = await self.page.locator("table tbody tr").all()
             print(f"Found {len(result_rows)} result rows")
             
             for i, row in enumerate(result_rows[:max_results]):
                 try:
-                    # Check if this is a "Notice of Federal Tax Lien"
-                    row_text = await row.inner_text()
+                    # Get all cells in the row
+                    cells = await row.locator("td").all()
+                    if len(cells) < 4:
+                        continue
                     
-                    if "Notice of Federal Tax Lien" not in row_text:
+                    # Extract cell data (columns: Type, Debtor, File #, Secured Party, Status, Dates)
+                    cell_texts = []
+                    for cell in cells:
+                        text = await cell.inner_text()
+                        cell_texts.append(text.strip())
+                    
+                    doc_type = cell_texts[0] if len(cell_texts) > 0 else ""
+                    debtor = cell_texts[1] if len(cell_texts) > 1 else ""
+                    file_number = cell_texts[2] if len(cell_texts) > 2 else ""
+                    secured_party = cell_texts[3] if len(cell_texts) > 3 else ""
+                    
+                    print(f"Row {i+1}: {doc_type} | Debtor: {debtor[:30]}... | Secured: {secured_party[:30]}...")
+                    
+                    # Only process if it's a tax lien from IRS
+                    if "internal revenue" not in secured_party.lower():
+                        continue
+                    
+                    if "Notice of Federal Tax Lien" not in doc_type:
                         continue  # Skip non-lien entries
                         
-                    print(f"\nProcessing result {i+1}: Notice of Federal Tax Lien")
+                    print(f"\n✓ Processing IRS lien: {debtor[:50]}")
                     
                     # Extract filing date from row if available
                     filing_date = self._extract_date_from_row(row_text)
