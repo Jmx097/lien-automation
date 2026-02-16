@@ -61,33 +61,46 @@ async def process_site(site_id: str) -> Dict[str, Any]:
             raw_records = []
         elif site_id == '20':  # CA UCC
             from src.scrapers import CAUCCScraper
+            import io
+            import sys
             
-            async with CAUCCScraper(headless=True) as scraper:
-                # Calculate date range (last 90 days for more results)
-                from datetime import datetime, timedelta
-                to_date = datetime.now()
-                from_date = to_date - timedelta(days=90)
-                
-                from_date_str = from_date.strftime("%m/%d/%Y")
-                to_date_str = to_date.strftime("%m/%d/%Y")
-                
-                lien_records = await scraper.scrape(
-                    from_date=from_date_str,
-                    to_date=to_date_str,
-                    max_results=50
-                )
-                
-                # Convert to raw record format
-                raw_records = []
-                for record in lien_records:
-                    raw_records.append(type('Record', (), {
-                        'site_id': '20',
-                        'raw_text': json.dumps(record.to_dict()),
-                        'pdf_url': None,
-                        'filing_date': record.lien_or_receive_date
-                    })())
+            # Capture debug output
+            debug_output = io.StringIO()
+            old_stdout = sys.stdout
+            sys.stdout = debug_output
+            
+            try:
+                async with CAUCCScraper(headless=True) as scraper:
+                    # Calculate date range (last 90 days for more results)
+                    from datetime import datetime, timedelta
+                    to_date = datetime.now()
+                    from_date = to_date - timedelta(days=90)
                     
-                logger.info(f"CA UCC scraper found {len(raw_records)} records")
+                    from_date_str = from_date.strftime("%m/%d/%Y")
+                    to_date_str = to_date.strftime("%m/%d/%Y")
+                    
+                    lien_records = await scraper.scrape(
+                        from_date=from_date_str,
+                        to_date=to_date_str,
+                        max_results=50
+                    )
+                    
+                    # Convert to raw record format
+                    raw_records = []
+                    for record in lien_records:
+                        raw_records.append(type('Record', (), {
+                            'site_id': '20',
+                            'raw_text': json.dumps(record.to_dict()),
+                            'pdf_url': None,
+                            'filing_date': record.lien_or_receive_date
+                        })())
+                        
+                    logger.info(f"CA UCC scraper found {len(raw_records)} records")
+            finally:
+                sys.stdout = old_stdout
+            
+            # Store debug output in site_results
+            site_results['debug_log'] = debug_output.getvalue()
         else:
             raise ValueError(f"Unknown site_id: {site_id}")
             
