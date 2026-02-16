@@ -59,9 +59,35 @@ async def process_site(site_id: str) -> Dict[str, Any]:
         elif site_id == '10':  # Cook County
             logger.warning("Cook County scraper not yet implemented")
             raw_records = []
-        elif site_id == '20':  # CA SOS
-            logger.warning("CA SOS scraper not yet implemented")
-            raw_records = []
+        elif site_id == '20':  # CA UCC
+            from src.scrapers import CAUCCScraper
+            
+            async with CAUCCScraper(headless=True) as scraper:
+                # Calculate date range (last 30 days)
+                from datetime import datetime, timedelta
+                to_date = datetime.now()
+                from_date = to_date - timedelta(days=30)
+                
+                from_date_str = from_date.strftime("%m/%d/%Y")
+                to_date_str = to_date.strftime("%m/%d/%Y")
+                
+                lien_records = await scraper.scrape(
+                    from_date=from_date_str,
+                    to_date=to_date_str,
+                    max_results=50
+                )
+                
+                # Convert to raw record format
+                raw_records = []
+                for record in lien_records:
+                    raw_records.append(type('Record', (), {
+                        'site_id': '20',
+                        'raw_text': json.dumps(record.to_dict()),
+                        'pdf_url': None,
+                        'filing_date': record.lien_or_receive_date
+                    })())
+                    
+                logger.info(f"CA UCC scraper found {len(raw_records)} records")
         else:
             raise ValueError(f"Unknown site_id: {site_id}")
             
