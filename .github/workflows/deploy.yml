@@ -38,7 +38,7 @@ jobs:
         gcloud artifacts repositories create lien-extraction \
           --repository-format=docker \
           --location=us-central1 \
-          --description="Lien extraction Docker images"
+          --description="Lien extraction Docker images" || true
 
     - name: Configure Docker for Artifact Registry
       run: gcloud auth configure-docker us-central1-docker.pkg.dev
