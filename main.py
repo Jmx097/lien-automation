@@ -63,10 +63,10 @@ async def process_site(site_id: str) -> Dict[str, Any]:
             from src.scrapers import CAUCCScraper
             
             async with CAUCCScraper(headless=True) as scraper:
-                # Calculate date range (last 30 days)
+                # Calculate date range (last 90 days for more results)
                 from datetime import datetime, timedelta
                 to_date = datetime.now()
-                from_date = to_date - timedelta(days=30)
+                from_date = to_date - timedelta(days=90)
                 
                 from_date_str = from_date.strftime("%m/%d/%Y")
                 to_date_str = to_date.strftime("%m/%d/%Y")
