@@ -1,31 +1,26 @@
 #!/usr/bin/env python3
 """
-California SOS UCC Lien Scraper
-Scrapes IRS tax liens from CA Secretary of State UCC database
+California SOS UCC Lien Scraper - ScrapingBee Version
+Uses ScrapingBee API with JS scenarios to execute search
 """
 
 import asyncio
 import re
-import time
-import random
+import os
+import json
+import base64
 from datetime import datetime, timedelta
 from typing import List, Dict, Optional
 from dataclasses import dataclass
-import json
-
-from playwright.async_api import async_playwright, Page, Browser
-import pytesseract
-from pdf2image import convert_from_path
-import tempfile
-import os
+import aiohttp
 
 
 @dataclass
 class LienRecord:
-    site_id: str = "11"  # CA UCC Site
+    site_id: str = "20"
     lien_or_receive_date: str = ""
     amount: str = ""
-    lead_type: str = "Lien"  # Notice of Federal Tax Lien
+    lead_type: str = "Lien"
     lead_source: str = "777"
     liability_type: str = "IRS"
     business_personal: str = ""
@@ -59,486 +54,233 @@ class LienRecord:
 class CAUCCScraper:
     BASE_URL = "https://bizfileonline.sos.ca.gov/search/ucc"
     
-    def __init__(self, headless: bool = True, delay_range: tuple = (2, 5)):
-        self.headless = headless
-        self.delay_range = delay_range  # Random delay between requests
-        self.browser: Optional[Browser] = None
-        self.page: Optional[Page] = None
-        self.results: List[LienRecord] = []
+    def __init__(self, api_key: str = None):
+        self.api_key = api_key or os.getenv("SCRAPINGBEE_API_KEY")
+        if not self.api_key:
+            raise ValueError("ScrapingBee API key required. Set SCRAPINGBEE_API_KEY env var.")
         
     async def __aenter__(self):
-        self.playwright = await async_playwright().start()
-        self.browser = await self.playwright.chromium.launch(headless=self.headless)
-        context = await self.browser.new_context(
-            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
-        )
-        self.page = await context.new_page()
+        self.session = aiohttp.ClientSession()
         return self
         
     async def __aexit__(self, exc_type, exc_val, exc_tb):
-        if self.browser:
-            await self.browser.close()
-        await self.playwright.stop()
+        await self.session.close()
         
-    async def random_delay(self):
-        """Random delay to be respectful to the server"""
-        delay = random.uniform(*self.delay_range)
-        await asyncio.sleep(delay)
+    def build_js_scenario(self, from_date: str, to_date: str) -> List[Dict]:
+        """Build JavaScript scenario for ScrapingBee to execute the search"""
         
-    async def navigate_to_search(self):
-        """Navigate to UCC search page"""
-        print(f"Navigating to {self.BASE_URL}")
-        await self.page.goto(self.BASE_URL)
-        await self.page.wait_for_load_state("networkidle")
-        await self.random_delay()
+        # Convert MM/DD/YYYY to YYYY-MM-DD for date inputs
+        from_parts = from_date.split("/")
+        to_parts = to_date.split("/")
+        from_iso = f"{from_parts[2]}-{from_parts[0]}-{from_parts[1]}"
+        to_iso = f"{to_parts[2]}-{to_parts[0]}-{to_parts[1]}"
         
-    async def click_advanced_search(self):
-        """Click Advanced search link"""
-        print("Clicking Advanced search...")
-        try:
-            # Use CSS class selector based on actual site HTML
-            advanced_button = self.page.locator("button.advanced-search-toggle")
-            if await advanced_button.is_visible():
-                await advanced_button.click()
-                await self.random_delay()
-                print("Advanced search opened")
-            else:
-                print("Advanced button not visible, trying fallback...")
-                # Fallback: try by text content
-                await self.page.get_by_text("Advanced", exact=False).click()
-        except Exception as e:
-            print(f"Note: Could not click Advanced: {e}")
+        scenario = [
+            {"instructions": [{"wait": 3000}]},  # Wait for page load
+            {
+                "instructions": [
+                    {"click": "button.advanced-search-toggle"}  # Click Advanced
+                ]
+            },
+            {"instructions": [{"wait": 2000}]},  # Wait for panel
+            {
+                "instructions": [
+                    {"fill": ["input[type=text]", "internal revenue service"]}  # Fill search
+                ]
+            },
+            {
+                "instructions": [
+                    {"fill": ["input[type=date]:nth-of-type(1)", from_iso]},  # From date
+                    {"fill": ["input[type=date]:nth-of-type(2)", to_iso]}   # To date
+                ]
+            },
+            {
+                "instructions": [
+                    {"click": "button[type=submit]"}  # Submit search
+                ]
+            },
+            {"instructions": [{"wait": 8000}]}  # Wait for results
+        ]
+        
+        return scenario
+        
+    async def fetch_with_scenario(self, url: str, scenario: List[Dict]) -> str:
+        """Fetch page via ScrapingBee with JS scenario"""
+        js_scenario = json.dumps(scenario)
+        
+        scrapingbee_url = (
+            f"https://app.scrapingbee.com/api/v1/?"
+            f"api_key={self.api_key}&"
+            f"url={url}&"
+            f"render_js=true&"
+            f"js_scenario={js_scenario}"
+        )
+        
+        print(f"Fetching via ScrapingBee with JS scenario")
+        print(f"Scenario steps: {len(scenario)}")
+        
+        async with self.session.get(scrapingbee_url) as response:
+            if response.status != 200:
+                text = await response.text()
+                print(f"Error {response.status}: {text[:500]}")
+                return ""
+            html = await response.text()
+            print(f"Received {len(html)} bytes")
+            return html
             
-    async def fill_search_criteria(self, from_date: str = None, to_date: str = None):
-        """
-        Fill in search criteria
-        Defaults to last 7 days if not specified
-        """
-        from datetime import datetime, timedelta
+    def parse_results(self, html: str) -> List[Dict]:
+        """Parse UCC results from HTML"""
+        try:
+            from bs4 import BeautifulSoup
+        except ImportError:
+            print("BeautifulSoup not installed, using regex fallback")
+            return self._parse_with_regex(html)
         
-        # Calculate last 7 days if not provided
+        records = []
+        soup = BeautifulSoup(html, 'html.parser')
+        
+        # Find result table rows
+        tables = soup.find_all('table')
+        print(f"Found {len(tables)} tables in HTML")
+        
+        if not tables:
+            print("No tables found")
+            return records
+            
+        # Try to find the results table
+        for table in tables:
+            rows = table.find_all('tr')
+            print(f"Table has {len(rows)} rows")
+            
+            for i, row in enumerate(rows[1:]):  # Skip header
+                try:
+                    cells = row.find_all('td')
+                    if len(cells) < 4:
+                        continue
+                    
+                    doc_type = cells[0].get_text(strip=True) if len(cells) > 0 else ""
+                    debtor = cells[1].get_text(strip=True) if len(cells) > 1 else ""
+                    file_number = cells[2].get_text(strip=True) if len(cells) > 2 else ""
+                    secured_party = cells[3].get_text(strip=True) if len(cells) > 3 else ""
+                    status = cells[4].get_text(strip=True) if len(cells) > 4 else ""
+                    dates = cells[5].get_text(strip=True) if len(cells) > 5 else ""
+                    
+                    print(f"Row {i}: Type='{doc_type}' | Debtor='{debtor[:30]}' | Secured='{secured_party[:30]}'")
+                    
+                    # Filter for IRS liens only
+                    is_irs = "internal revenue" in secured_party.lower()
+                    is_lien = "federal tax lien" in doc_type.lower() or "tax lien" in doc_type.lower()
+                    
+                    if not is_irs or not is_lien:
+                        continue
+                    
+                    record = {
+                        "site_id": "20",
+                        "document_type": doc_type,
+                        "debtor": debtor,
+                        "file_number": file_number,
+                        "secured_party": secured_party,
+                        "status": status,
+                        "dates": dates,
+                        "lien_or_receive_date": dates.split()[0] if dates else "",
+                        "business_personal": self._classify_business_personal(debtor),
+                        "company": debtor if self._is_business(debtor) else "",
+                        "first_name": "",
+                        "last_name": ""
+                    }
+                    
+                    # Parse personal name if applicable
+                    if not self._is_business(debtor):
+                        name_parts = debtor.split()
+                        if len(name_parts) >= 2:
+                            record["first_name"] = name_parts[0]
+                            record["last_name"] = name_parts[-1]
+                    
+                    records.append(record)
+                    print(f"✓ Found IRS lien: {debtor[:50]}")
+                    
+                except Exception as e:
+                    print(f"Error parsing row {i}: {e}")
+                    continue
+                    
+        return records
+        
+    def _parse_with_regex(self, html: str) -> List[Dict]:
+        """Fallback regex parser if BeautifulSoup not available"""
+        records = []
+        # Simple regex to find table rows
+        row_pattern = r'<tr[^>]*>(.*?)</tr>'
+        cell_pattern = r'<td[^>]*>(.*?)</td>'
+        
+        rows = re.findall(row_pattern, html, re.DOTALL)
+        print(f"Regex found {len(rows)} rows")
+        
+        for i, row_html in enumerate(rows[1:]):
+            cells = re.findall(cell_pattern, row_html, re.DOTALL)
+            if len(cells) < 4:
+                continue
+                
+            # Strip HTML tags
+            clean_cells = [re.sub(r'<[^>]+>', '', c).strip() for c in cells]
+            
+            doc_type = clean_cells[0] if len(clean_cells) > 0 else ""
+            debtor = clean_cells[1] if len(clean_cells) > 1 else ""
+            secured_party = clean_cells[3] if len(clean_cells) > 3 else ""
+            
+            if "internal revenue" in secured_party.lower() and "lien" in doc_type.lower():
+                records.append({
+                    "site_id": "20",
+                    "document_type": doc_type,
+                    "debtor": debtor,
+                    "secured_party": secured_party
+                })
+                
+        return records
+        
+    def _is_business(self, name: str) -> bool:
+        """Check if debtor name is a business"""
+        business_keywords = ['INC', 'LLC', 'CORP', 'LTD', 'COMPANY', 'CO.', 'CORPORATION']
+        name_upper = name.upper()
+        return any(keyword in name_upper for keyword in business_keywords)
+        
+    def _classify_business_personal(self, name: str) -> str:
+        """Classify as Business or Personal"""
+        return "Business" if self._is_business(name) else "Personal"
+        
+    async def scrape(self, from_date: str = None, to_date: str = None, max_results: int = 50) -> List[LienRecord]:
+        """Main scraping method"""
+        # Calculate default date range (last 7 days)
         if not from_date or not to_date:
             today = datetime.now()
             week_ago = today - timedelta(days=7)
             to_date = today.strftime("%m/%d/%Y")
             from_date = week_ago.strftime("%m/%d/%Y")
         
-        print(f"Filling search criteria: 'internal revenue service', {from_date} to {to_date}")
-        
-        # Wait for advanced panel to open
-        await asyncio.sleep(2)
-        
-        # Fill search box with "internal revenue service"
-        try:
-            # Find the search input (usually first visible text input)
-            inputs = await self.page.locator("input[type=text]").all()
-            for inp in inputs:
-                if await inp.is_visible():
-                    await inp.fill("internal revenue service")
-                    print("Filled search box with 'internal revenue service'")
-                    break
-        except Exception as e:
-            print(f"Warning: Could not fill search box: {e}")
-        
-        # Fill date range (File Date Start/End)
-        try:
-            date_inputs = await self.page.locator("input[type=date]").all()
-            if len(date_inputs) >= 2:
-                # Convert MM/DD/YYYY to YYYY-MM-DD for HTML date inputs
-                from_parts = from_date.split("/")
-                to_parts = to_date.split("/")
-                from_iso = f"{from_parts[2]}-{from_parts[0]}-{from_parts[1]}"
-                to_iso = f"{to_parts[2]}-{to_parts[0]}-{to_parts[1]}"
-                
-                await date_inputs[0].fill(from_iso)
-                await date_inputs[1].fill(to_iso)
-                print(f"Filled File Date range: {from_date} to {to_date}")
-            else:
-                print("Warning: Could not find date range fields")
-        except Exception as e:
-            print(f"Warning: Could not fill date fields: {e}")
-        
-        # Status and File Type should default to "All" (no change needed)
-        print("Filters applied: Status=All, File Type=All")
-        
-        await self.random_delay()
-        
-    async def submit_search(self):
-        """Submit the search form"""
-        print("Submitting search...")
-        try:
-            # Try to find search button by role
-            search_button = self.page.get_by_role("button", name="Search")
-            if await search_button.count() > 0 and await search_button.first.is_visible():
-                await search_button.first.click()
-                print("Search submitted")
-            else:
-                # Try pressing Enter on the first input
-                await self.page.locator("input").first.press("Enter")
-                print("Search submitted (Enter key)")
-                
-        except Exception as e:
-            print(f"Warning: Could not submit search: {e}")
-            
-        # Wait for results to load
-        await self.page.wait_for_load_state("networkidle")
-        print("DEBUG: Page loaded, waiting for results...")
-        await asyncio.sleep(5)  # Give time for results to render
-        
-        # Debug: Check page title and URL
-        title = await self.page.title()
-        url = self.page.url
-        print(f"DEBUG: Page title: {title}")
-        print(f"DEBUG: Page URL: {url}")
-        
-        # AGGRESSIVE DEBUG: Save screenshot and HTML
-        try:
-            screenshot_path = "/tmp/ca_ucc_results.png"
-            html_path = "/tmp/ca_ucc_results.html"
-            await self.page.screenshot(path=screenshot_path, full_page=True)
-            html_content = await self.page.content()
-            with open(html_path, "w", encoding="utf-8") as f:
-                f.write(html_content)
-            print(f"DEBUG: Screenshot saved: {screenshot_path}")
-            print(f"DEBUG: HTML saved: {html_path} ({len(html_content)} chars)")
-        except Exception as e:
-            print(f"DEBUG: Failed to save debug files: {e}")
-        
-        # Check for "No results" message
-        page_text = await self.page.inner_text("body")
-        if "no results" in page_text.lower() or "0 results" in page_text.lower():
-            print("DEBUG: Search returned NO RESULTS")
-        elif "result" in page_text.lower():
-            # Try to extract result count
-            import re
-            result_match = re.search(r'(\d+)\s+result', page_text.lower())
-            if result_match:
-                print(f"DEBUG: Found {result_match.group(1)} results in page text")
-            else:
-                print(f"DEBUG: Page contains 'result' but couldn't parse count")
-        else:
-            print(f"DEBUG: Page text sample (first 500 chars): {page_text[:500]}")
-        
-    async def get_results_count(self) -> int:
-        """Get number of search results"""
-        try:
-            # Look for results count indicator
-            count_text = await self.page.locator("text=/\\d+ result/i").first.inner_text()
-            match = re.search(r'(\d+)', count_text)
-            if match:
-                return int(match.group(1))
-        except:
-            pass
-        return 0
-        
-    async def process_results(self, max_results: int = 50) -> List[LienRecord]:
-        """
-        Process search results
-        Only extract "Notice of Federal Tax Lien" entries
-        """
-        print(f"Processing up to {max_results} results...")
-        records = []
-        
-        try:
-            # AGGRESSIVE DEBUG: Find all result rows
-            # First, check if table exists
-            tables = await self.page.locator("table").all()
-            print(f"DEBUG: Found {len(tables)} tables on page")
-            
-            # Log table HTML if found
-            if len(tables) > 0:
-                try:
-                    table_html = await tables[0].inner_html()
-                    print(f"DEBUG: First table HTML (first 500 chars): {table_html[:500]}")
-                except Exception as e:
-                    print(f"DEBUG: Could not get table HTML: {e}")
-            
-            # Try different selectors with detailed logging
-            selectors_to_try = [
-                "table tbody tr",
-                "table tr",
-                ".div-table tr",
-                "[class*='table'] tr",
-                "tbody tr",
-                "tr"  # Very broad - should find something
-            ]
-            
-            result_rows = []
-            for selector in selectors_to_try:
-                try:
-                    rows = await self.page.locator(selector).all()
-                    print(f"DEBUG: Selector '{selector}' found {len(rows)} rows")
-                    if len(rows) > 0 and len(result_rows) == 0:
-                        result_rows = rows
-                        print(f"DEBUG: Using selector '{selector}' with {len(rows)} rows")
-                        # Log first row content
-                        if len(rows) > 0:
-                            row_text = await rows[0].inner_text()
-                            print(f"DEBUG: First row text: {row_text[:200]}")
-                except Exception as e:
-                    print(f"DEBUG: Selector '{selector}' error: {e}")
-            
-            print(f"Found {len(result_rows)} result rows")
-            
-            # AGGRESSIVE DEBUG: If still no rows, dump page structure
-            if len(result_rows) == 0:
-                print("DEBUG: No rows found - dumping page structure...")
-                all_divs = await self.page.locator("div").all()
-                print(f"DEBUG: Total divs on page: {len(all_divs)}")
-                all_links = await self.page.locator("a").all()
-                print(f"DEBUG: Total links on page: {len(all_links)}")
-                all_buttons = await self.page.locator("button").all()
-                print(f"DEBUG: Total buttons on page: {len(all_buttons)}")
-            
-            for i, row in enumerate(result_rows[:max_results]):
-                try:
-                    # Get all cells in the row
-                    cells = await row.locator("td").all()
-                    if len(cells) < 4:
-                        continue
-                    
-                    # Extract cell data (columns: Type, Debtor, File #, Secured Party, Status, Dates)
-                    cell_texts = []
-                    for cell in cells:
-                        text = await cell.inner_text()
-                        cell_texts.append(text.strip())
-                    
-                    doc_type = cell_texts[0] if len(cell_texts) > 0 else ""
-                    debtor = cell_texts[1] if len(cell_texts) > 1 else ""
-                    file_number = cell_texts[2] if len(cell_texts) > 2 else ""
-                    secured_party = cell_texts[3] if len(cell_texts) > 3 else ""
-                    status = cell_texts[4] if len(cell_texts) > 4 else ""
-                    dates = cell_texts[5] if len(cell_texts) > 5 else ""
-                    
-                    print(f"Row {i+1}: Type='{doc_type}' | Debtor='{debtor[:30]}' | Secured='{secured_party[:30]}' | Status='{status}'")
-                    
-                    # Temporarily disabled strict filtering to debug
-                    # is_irs = "internal revenue" in secured_party.lower() or "internal revenue" in debtor.lower()
-                    # is_lien = "federal tax lien" in doc_type.lower() or "tax lien" in doc_type.lower()
-                    
-                    # Process ALL rows for debugging
-                    print(f"  -> Processing row (no filter)")
-                        
-                    print(f"\n✓ Processing IRS lien: {debtor[:50]}")
-                    
-                    # Extract filing date from row if available
-                    filing_date = self._extract_date_from_row(row_text)
-                    
-                    # Click on the result to view details
-                    await row.click()
-                    await self.random_delay()
-                    await asyncio.sleep(2)
-                    
-                    # Click "View history"
-                    view_history = await self.page.locator("text=View history").first
-                    if await view_history.is_visible():
-                        await view_history.click()
-                        await self.random_delay()
-                        await asyncio.sleep(2)
-                        
-                    # Download document
-                    download_link = await self.page.locator("text=Download").first
-                    if await download_link.is_visible():
-                        # Trigger download
-                        async with self.page.expect_download() as download_info:
-                            await download_link.click()
-                        download = await download_info.value
-                        
-                        # Save to temp file
-                        with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp:
-                            pdf_path = tmp.name
-                            await download.save_as(pdf_path)
-                            
-                        print(f"Downloaded PDF: {pdf_path}")
-                        
-                        # Extract data from PDF
-                        record = await self._extract_from_pdf(pdf_path, filing_date)
-                        records.append(record)
-                        
-                        # Clean up
-                        os.unlink(pdf_path)
-                        
-                    # Go back to results
-                    await self.page.go_back()
-                    await self.page.go_back()
-                    await asyncio.sleep(2)
-                    
-                except Exception as e:
-                    print(f"Error processing result {i+1}: {e}")
-                    continue
-                    
-        except Exception as e:
-            print(f"Error processing results: {e}")
-            
-        print(f"\nProcessed {len(records)} lien records")
-        return records
-        
-    def _extract_date_from_row(self, row_text: str) -> str:
-        """Extract filing date from result row text"""
-        # Look for date patterns MM/DD/YYYY or MM-DD-YYYY
-        date_pattern = r'(\d{1,2}[/-]\d{1,2}[/-]\d{2,4})'
-        match = re.search(date_pattern, row_text)
-        if match:
-            return match.group(1)
-        return ""
-        
-    async def _extract_from_pdf(self, pdf_path: str, filing_date: str) -> LienRecord:
-        """
-        Extract data from PDF using OCR
-        This is a placeholder - actual implementation would use PDF parsing
-        """
-        record = LienRecord()
-        record.lien_or_receive_date = filing_date
-        
-        try:
-            # Convert PDF to images for OCR
-            images = convert_from_path(pdf_path)
-            
-            full_text = ""
-            for image in images:
-                text = pytesseract.image_to_string(image)
-                full_text += text + "\n"
-                
-            print(f"Extracted text from PDF (first 500 chars):\n{full_text[:500]}")
-            
-            # Parse the extracted text
-            record = self._parse_lien_text(full_text, filing_date)
-            
-        except Exception as e:
-            print(f"Error extracting from PDF: {e}")
-            
-        return record
-        
-    def _parse_lien_text(self, text: str, filing_date: str) -> LienRecord:
-        """
-        Parse extracted text and map to LienRecord fields
-        Based on the mapping guide rules
-        """
-        record = LienRecord()
-        record.lien_or_receive_date = filing_date
-        record.lead_type = "Lien"
-        record.lead_source = "777"
-        record.liability_type = "IRS"
-        
-        # Extract Amount (look for "Total" followed by number)
-        amount_match = re.search(r'Total[:\s]*\$?([\d,]+)', text, re.IGNORECASE)
-        if amount_match:
-            record.amount = amount_match.group(1).replace(',', '')
-            
-        # Extract taxpayer name and determine Business vs Personal
-        taxpayer_section = re.search(r'Name of Taxpayer[:\s]*([^\n]+)', text, re.IGNORECASE)
-        if taxpayer_section:
-            taxpayer_name = taxpayer_section.group(1).strip()
-            record = self._classify_taxpayer(taxpayer_name, record)
-            
-        # Extract address
-        address_match = re.search(r'(?:Address|Residence)[:\s]*([^\n,]+),\s*([^\n,]+),\s*(\w{2})\s*(\d{5})', text, re.IGNORECASE)
-        if address_match:
-            record.street = address_match.group(1).strip()
-            record.city = address_match.group(2).strip()
-            record.state = address_match.group(3)
-            record.zip_code = address_match.group(4)
-            
-        return record
-        
-    def _classify_taxpayer(self, name: str, record: LienRecord) -> LienRecord:
-        """
-        Classify taxpayer as Business or Personal based on mapping guide rules
-        """
-        name_upper = name.upper()
-        
-        # Business indicators
-        business_keywords = ['INC', 'LLC', 'CORP', 'CORPORATION', 'COMPANY', 
-                           'CO.', 'LTD', 'LIMITED', 'SERVICE', 'SOLUTIONS',
-                           'BUSINESS', 'ENTERPRISE', 'ENTERPRISES', 'GROUP',
-                           'PARTNERSHIP', 'LP', 'LLP', 'HOLDINGS', 'ASSOCIATES']
-        
-        # Check for business keywords
-        is_business = any(keyword in name_upper for keyword in business_keywords)
-        
-        # Check for personal name pattern (First Last or First M Last)
-        name_parts = name.split()
-        looks_like_person = len(name_parts) >= 2 and len(name_parts) <= 4
-        
-        # Check if it looks like a person's name (no business keywords)
-        if is_business or not looks_like_person:
-            record.business_personal = "Business"
-            record.company = name
-        else:
-            record.business_personal = "Personal"
-            record.first_name = name_parts[0]
-            record.last_name = name_parts[-1]
-            if len(name_parts) == 3:
-                # Could be First Middle Last - use middle as part of first or skip
-                pass
-                
-        return record
-        
-    async def scrape(self, from_date: str, to_date: str, max_results: int = 50) -> List[LienRecord]:
-        """
-        Main scraping method
-        
-        Args:
-            from_date: Start date (MM/DD/YYYY)
-            to_date: End date (MM/DD/YYYY)
-            max_results: Maximum number of results to process
-            
-        Returns:
-            List of LienRecord objects
-        """
         print(f"\n{'='*60}")
-        print(f"CA UCC Lien Scraper")
+        print(f"CA UCC Lien Scraper (ScrapingBee)")
         print(f"Date Range: {from_date} to {to_date}")
         print(f"Max Results: {max_results}")
         print(f"{'='*60}\n")
         
         try:
-            await self.navigate_to_search()
-            await self.click_advanced_search()
-            await self.fill_search_criteria(from_date, to_date)
-            await self.submit_search()
+            # Build JS scenario to execute search
+            scenario = self.build_js_scenario(from_date, to_date)
             
-            results = await self.process_results(max_results)
-            return results
+            # Fetch page with scenario
+            html = await self.fetch_with_scenario(self.BASE_URL, scenario)
+            
+            if not html:
+                print("No HTML returned from ScrapingBee")
+                return []
+            
+            # Parse results
+            results = self.parse_results(html)
+            
+            print(f"\nFound {len(results)} IRS lien records")
+            return [LienRecord(**r) for r in results[:max_results]]
             
         except Exception as e:
             print(f"Error during scraping: {e}")
+            import traceback
+            traceback.print_exc()
             return []
-            
-
-async def main():
-    """Example usage"""
-    # Calculate date range (last 30 days)
-    to_date = datetime.now()
-    from_date = to_date - timedelta(days=30)
-    
-    from_date_str = from_date.strftime("%m/%d/%Y")
-    to_date_str = to_date.strftime("%m/%d/%Y")
-    
-    async with CAUCCScraper(headless=True) as scraper:
-        records = await scraper.scrape(
-            from_date=from_date_str,
-            to_date=to_date_str,
-            max_results=10
-        )
-        
-        # Print results
-        print(f"\n{'='*60}")
-        print(f"SCRAPING COMPLETE")
-        print(f"Records found: {len(records)}")
-        print(f"{'='*60}\n")
-        
-        for i, record in enumerate(records, 1):
-            print(f"\nRecord {i}:")
-            for key, value in record.to_dict().items():
-                print(f"  {key}: {value}")
-                
-        # Save to JSON
-        output_file = f"ca_ucc_liens_{from_date_str.replace('/', '-')}_{to_date_str.replace('/', '-')}.json"
-        with open(output_file, 'w') as f:
-            json.dump([r.to_dict() for r in records], f, indent=2)
-        print(f"\nResults saved to: {output_file}")
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
