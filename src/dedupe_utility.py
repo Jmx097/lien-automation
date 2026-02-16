@@ -7,7 +7,7 @@ import logging
 from typing import List, Dict, Set, Tuple
 from dataclasses import dataclass
 
-from sheets_integration import GoogleSheetsIntegration
+from .sheets_integration import GoogleSheetsIntegration
 
 logger = logging.getLogger(__name__)
 

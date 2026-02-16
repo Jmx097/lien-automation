@@ -1,28 +1,39 @@
+#!/usr/bin/env python3
 """
 Federal Tax Lien Extraction Pipeline - Main Entry Point
 Production-grade Cloud Function for automated lien data extraction
+
+Usage:
+    # Local testing
+    python main.py
+    
+    # Cloud Function deployment
+    gcloud functions deploy lien_extraction \
+        --runtime python311 \
+        --trigger-http \
+        --entry-point main \
+        --memory 1GiB \
+        --timeout 300s
 """
 
 import os
+import sys
 import json
 import logging
 import asyncio
 from datetime import datetime
 from typing import Dict, List, Any
 
-# Import our modules
-from browser_automation import NYCACRISAutomation, scrape_nyc_acris
-from pdf_extractor import PDFExtractor, FieldExtractor
-from field_mapper import FieldMapper, MappedRecord
-from accuracy_verifier import AccuracyVerifier, verify_records
-from sheets_integration import GoogleSheetsIntegration, SheetWriteResult
+# Add src to path for imports
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+from src.config import load_sites_config, get_site_by_id
+from src.browser_automation import NYCACRISAutomation, scrape_nyc_acris
+from src.pdf_extractor import PDFExtractor, FieldExtractor
+from src.field_mapper import FieldMapper, MappedRecord
+from src.accuracy_verifier import AccuracyVerifier, verify_records
+from src.sheets_integration import GoogleSheetsIntegration, SheetWriteResult
+from src.utils import logger, ensure_directories
 
 # Configuration
 SHEET_ID = os.getenv('SHEETS_ID', '1qpstqj-kQje69cFPb-txNV48hpicd-N_4bA1mbD1854')
@@ -46,11 +57,9 @@ async def process_site(site_id: str) -> Dict[str, Any]:
         if site_id == '12':  # NYC ACRIS
             raw_records = await scrape_nyc_acris()
         elif site_id == '10':  # Cook County
-            # TODO: Implement Cook County scraper
             logger.warning("Cook County scraper not yet implemented")
             raw_records = []
         elif site_id == '20':  # CA SOS
-            # TODO: Implement CA SOS scraper
             logger.warning("CA SOS scraper not yet implemented")
             raw_records = []
         else:
@@ -154,20 +163,12 @@ def main(request):
     {
         "success": true,
         "timestamp": "2024-02-15T12:00:00",
-        "results": [
-            {
-                "site_id": "12",
-                "records_found": 5,
-                "records_processed": 5,
-                "records_written": 3,
-                "duplicates_skipped": 2,
-                "errors": []
-            }
-        ]
+        "results": [...]
     }
     """
     try:
         logger.info("Starting Federal Tax Lien Extraction Pipeline")
+        ensure_directories()
         
         # Parse request
         if request and hasattr(request, 'get_json'):
