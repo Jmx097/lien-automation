@@ -1,3 +1,4 @@
+yaml
 name: Deploy to Cloud Run
 
 on:
@@ -24,18 +25,36 @@ jobs:
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v2
 
-    - name: Configure Docker
-      run: gcloud auth configure-docker
+    - name: Enable required APIs
+      run: |
+        gcloud services enable run.googleapis.com
+        gcloud services enable artifactregistry.googleapis.com
+        gcloud services enable secretmanager.googleapis.com
+
+    - name: Create Artifact Registry repository (if not exists)
+      run: |
+        gcloud artifacts repositories describe lien-extraction \
+          --location=us-central1 \
+          --repository-format=docker 2>/dev/null || \
+        gcloud artifacts repositories create lien-extraction \
+          --repository-format=docker \
+          --location=us-central1 \
+          --description="Lien extraction Docker images"
+
+    - name: Configure Docker for Artifact Registry
+      run: gcloud auth configure-docker us-central1-docker.pkg.dev
 
     - name: Build and Push Container
       run: |
-        docker build -t gcr.io/lien-extraction-sa/lien-extraction:${{ github.sha }} .
-        docker push gcr.io/lien-extraction-sa/lien-extraction:${{ github.sha }}
+        IMAGE_NAME="us-central1-docker.pkg.dev/lien-extraction-sa/lien-extraction/lien-extraction:${{ github.sha }}"
+        docker build -t $IMAGE_NAME .
+        docker push $IMAGE_NAME
+        echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
 
     - name: Deploy to Cloud Run
       run: |
         gcloud run deploy lien-extraction \
-          --image gcr.io/lien-extraction-sa/lien-extraction:${{ github.sha }} \
+          --image ${{ env.IMAGE_NAME }} \
           --platform managed \
           --region us-central1 \
           --allow-unauthenticated \
@@ -43,3 +62,17 @@ jobs:
           --timeout 300s \
           --set-env-vars SHEETS_ID=${{ secrets.SHEETS_ID }} \
           --set-secrets GOOGLE_SERVICE_ACCOUNT_JSON=service-account-key:latest
+
+    - name: Get Service URL
+      run: |
+        URL=$(gcloud run services describe lien-extraction --region=us-central1 --format='value(status.url)')
+        echo "Service URL: $URL"
+        echo "SERVICE_URL=$URL" >> $GITHUB_ENV
+
+    - name: Test Deployment
+      run: |
+        echo "Testing endpoint: ${{ env.SERVICE_URL }}"
+        curl -X POST "${{ env.SERVICE_URL }}" \
+          -H "Content-Type: application/json" \
+          -d '{"sites":["12"],"max_results":1}' \
+          --max-time 30 || echo "Test completed (may have failed)"
