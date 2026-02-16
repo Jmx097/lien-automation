@@ -191,6 +191,34 @@ class CAUCCScraper:
         print(f"DEBUG: Page title: {title}")
         print(f"DEBUG: Page URL: {url}")
         
+        # AGGRESSIVE DEBUG: Save screenshot and HTML
+        try:
+            screenshot_path = "/tmp/ca_ucc_results.png"
+            html_path = "/tmp/ca_ucc_results.html"
+            await self.page.screenshot(path=screenshot_path, full_page=True)
+            html_content = await self.page.content()
+            with open(html_path, "w", encoding="utf-8") as f:
+                f.write(html_content)
+            print(f"DEBUG: Screenshot saved: {screenshot_path}")
+            print(f"DEBUG: HTML saved: {html_path} ({len(html_content)} chars)")
+        except Exception as e:
+            print(f"DEBUG: Failed to save debug files: {e}")
+        
+        # Check for "No results" message
+        page_text = await self.page.inner_text("body")
+        if "no results" in page_text.lower() or "0 results" in page_text.lower():
+            print("DEBUG: Search returned NO RESULTS")
+        elif "result" in page_text.lower():
+            # Try to extract result count
+            import re
+            result_match = re.search(r'(\d+)\s+result', page_text.lower())
+            if result_match:
+                print(f"DEBUG: Found {result_match.group(1)} results in page text")
+            else:
+                print(f"DEBUG: Page contains 'result' but couldn't parse count")
+        else:
+            print(f"DEBUG: Page text sample (first 500 chars): {page_text[:500]}")
+        
     async def get_results_count(self) -> int:
         """Get number of search results"""
         try:
@@ -212,29 +240,55 @@ class CAUCCScraper:
         records = []
         
         try:
-            # Find all result rows (actual site uses table tbody tr)
+            # AGGRESSIVE DEBUG: Find all result rows
             # First, check if table exists
             tables = await self.page.locator("table").all()
             print(f"DEBUG: Found {len(tables)} tables on page")
             
-            # Try different selectors
+            # Log table HTML if found
+            if len(tables) > 0:
+                try:
+                    table_html = await tables[0].inner_html()
+                    print(f"DEBUG: First table HTML (first 500 chars): {table_html[:500]}")
+                except Exception as e:
+                    print(f"DEBUG: Could not get table HTML: {e}")
+            
+            # Try different selectors with detailed logging
             selectors_to_try = [
                 "table tbody tr",
                 "table tr",
                 ".div-table tr",
                 "[class*='table'] tr",
-                "tbody tr"
+                "tbody tr",
+                "tr"  # Very broad - should find something
             ]
             
             result_rows = []
             for selector in selectors_to_try:
-                rows = await self.page.locator(selector).all()
-                print(f"DEBUG: Selector '{selector}' found {len(rows)} rows")
-                if len(rows) > 0 and len(result_rows) == 0:
-                    result_rows = rows
-                    print(f"DEBUG: Using selector '{selector}'")
+                try:
+                    rows = await self.page.locator(selector).all()
+                    print(f"DEBUG: Selector '{selector}' found {len(rows)} rows")
+                    if len(rows) > 0 and len(result_rows) == 0:
+                        result_rows = rows
+                        print(f"DEBUG: Using selector '{selector}' with {len(rows)} rows")
+                        # Log first row content
+                        if len(rows) > 0:
+                            row_text = await rows[0].inner_text()
+                            print(f"DEBUG: First row text: {row_text[:200]}")
+                except Exception as e:
+                    print(f"DEBUG: Selector '{selector}' error: {e}")
             
             print(f"Found {len(result_rows)} result rows")
+            
+            # AGGRESSIVE DEBUG: If still no rows, dump page structure
+            if len(result_rows) == 0:
+                print("DEBUG: No rows found - dumping page structure...")
+                all_divs = await self.page.locator("div").all()
+                print(f"DEBUG: Total divs on page: {len(all_divs)}")
+                all_links = await self.page.locator("a").all()
+                print(f"DEBUG: Total links on page: {len(all_links)}")
+                all_buttons = await self.page.locator("button").all()
+                print(f"DEBUG: Total buttons on page: {len(all_buttons)}")
             
             for i, row in enumerate(result_rows[:max_results]):
                 try:
