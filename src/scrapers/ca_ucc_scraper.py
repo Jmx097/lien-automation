@@ -96,14 +96,14 @@ class CAUCCScraper:
         """Click Advanced search link"""
         print("Clicking Advanced search...")
         try:
-            # Try to find and click Advanced link/button
-            advanced_link = await self.page.locator("text=Advanced").first
-            if await advanced_link.is_visible():
-                await advanced_link.click()
+            # Use get_by_role for more reliable selection
+            advanced_button = self.page.get_by_role("button", name="Advanced")
+            if await advanced_button.is_visible():
+                await advanced_button.click()
                 await self.random_delay()
                 print("Advanced search opened")
             else:
-                print("Advanced link not found or already open")
+                print("Advanced button not visible")
         except Exception as e:
             print(f"Note: Could not click Advanced: {e}")
             
@@ -114,39 +114,41 @@ class CAUCCScraper:
         """
         print(f"Filling search criteria: IRS, {from_date} to {to_date}")
         
+        # Wait a moment for advanced panel to open
+        await asyncio.sleep(2)
+        
         # Fill "Internal Revenue Service" in party field
-        # The field might be labeled as "Debtor", "Secured Party", or similar
         try:
-            # Try common field names
-            party_selectors = [
-                "input[placeholder*=party i]",
-                "input[placeholder*=name i]",
-                "input[name*=party i]",
-                "input[name*=debtor i]",
-                "input[name*=secured i]",
-                "input[type=text]"  # Fallback to first text input
-            ]
-            
-            for selector in party_selectors:
-                try:
-                    field = self.page.locator(selector).first
-                    if await field.is_visible():
-                        await field.fill("Internal Revenue Service")
-                        print(f"Filled party field with 'Internal Revenue Service'")
+            # Try to find by placeholder or label
+            party_field = self.page.get_by_placeholder("Name", exact=False)
+            if await party_field.count() > 0:
+                await party_field.first.fill("Internal Revenue Service")
+                print("Filled party field with 'Internal Revenue Service'")
+            else:
+                # Try any visible text input
+                inputs = await self.page.locator("input[type=text]").all()
+                for inp in inputs:
+                    if await inp.is_visible():
+                        await inp.fill("Internal Revenue Service")
+                        print("Filled first visible text input with 'Internal Revenue Service'")
                         break
-                except:
-                    continue
                     
         except Exception as e:
             print(f"Warning: Could not fill party field: {e}")
             
         # Fill date range
         try:
-            # Look for date inputs
-            date_inputs = await self.page.locator("input[type=date], input[placeholder*=date i]").all()
+            # Look for date inputs by type
+            date_inputs = await self.page.locator("input[type=date]").all()
             if len(date_inputs) >= 2:
-                await date_inputs[0].fill(from_date)
-                await date_inputs[1].fill(to_date)
+                # Convert MM/DD/YYYY to YYYY-MM-DD for HTML date inputs
+                from_parts = from_date.split("/")
+                to_parts = to_date.split("/")
+                from_iso = f"{from_parts[2]}-{from_parts[0]}-{from_parts[1]}"
+                to_iso = f"{to_parts[2]}-{to_parts[0]}-{to_parts[1]}"
+                
+                await date_inputs[0].fill(from_iso)
+                await date_inputs[1].fill(to_iso)
                 print(f"Filled date range: {from_date} to {to_date}")
             else:
                 print("Warning: Could not find date range fields")
@@ -160,14 +162,14 @@ class CAUCCScraper:
         """Submit the search form"""
         print("Submitting search...")
         try:
-            # Try to find search button
-            search_button = await self.page.locator("button:has-text('Search'), input[type=submit]").first
-            if await search_button.is_visible():
-                await search_button.click()
+            # Try to find search button by role
+            search_button = self.page.get_by_role("button", name="Search")
+            if await search_button.count() > 0 and await search_button.first.is_visible():
+                await search_button.first.click()
                 print("Search submitted")
             else:
-                # Try pressing Enter
-                await self.page.keyboard.press("Enter")
+                # Try pressing Enter on the first input
+                await self.page.locator("input").first.press("Enter")
                 print("Search submitted (Enter key)")
                 
         except Exception as e:
@@ -175,7 +177,7 @@ class CAUCCScraper:
             
         # Wait for results to load
         await self.page.wait_for_load_state("networkidle")
-        await asyncio.sleep(3)  # Give time for results to render
+        await asyncio.sleep(5)  # Give time for results to render
         
     async def get_results_count(self) -> int:
         """Get number of search results"""
