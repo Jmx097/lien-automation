@@ -226,15 +226,22 @@ class CAUCCScraper:
                     debtor = cell_texts[1] if len(cell_texts) > 1 else ""
                     file_number = cell_texts[2] if len(cell_texts) > 2 else ""
                     secured_party = cell_texts[3] if len(cell_texts) > 3 else ""
+                    status = cell_texts[4] if len(cell_texts) > 4 else ""
+                    dates = cell_texts[5] if len(cell_texts) > 5 else ""
                     
-                    print(f"Row {i+1}: {doc_type} | Debtor: {debtor[:30]}... | Secured: {secured_party[:30]}...")
+                    print(f"Row {i+1}: Type='{doc_type}' | Debtor='{debtor[:30]}' | Secured='{secured_party[:30]}' | Status='{status}'")
                     
-                    # Only process if it's a tax lien from IRS
-                    if "internal revenue" not in secured_party.lower():
+                    # Only process if it's a tax lien from IRS (check both doc_type and secured_party)
+                    is_irs = "internal revenue" in secured_party.lower() or "internal revenue" in debtor.lower()
+                    is_lien = "federal tax lien" in doc_type.lower() or "tax lien" in doc_type.lower()
+                    
+                    if not is_irs:
+                        print(f"  -> Skipping: not IRS (secured='{secured_party}')")
                         continue
                     
-                    if "Notice of Federal Tax Lien" not in doc_type:
-                        continue  # Skip non-lien entries
+                    if not is_lien:
+                        print(f"  -> Skipping: not a tax lien (type='{doc_type}')")
+                        continue
                         
                     print(f"\n✓ Processing IRS lien: {debtor[:50]}")
                     
