@@ -51,8 +51,18 @@ class GoogleSheetsIntegration:
         try:
             logger.info("Authenticating with Google Sheets...")
             
-            # Use service account from environment or provided info
-            if self.service_account_info:
+            # Try to load service account from Secret Manager (mounted file)
+            secret_path = '/secrets/GOOGLE_SERVICE_ACCOUNT_JSON'
+            if os.path.exists(secret_path):
+                logger.info("Loading credentials from Secret Manager mount...")
+                with open(secret_path, 'r') as f:
+                    service_account_info = json.load(f)
+                creds = Credentials.from_service_account_info(
+                    service_account_info,
+                    scopes=SCOPES
+                )
+            # Use provided service account info
+            elif self.service_account_info:
                 creds = Credentials.from_service_account_info(
                     self.service_account_info,
                     scopes=SCOPES
