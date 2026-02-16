@@ -231,17 +231,12 @@ class CAUCCScraper:
                     
                     print(f"Row {i+1}: Type='{doc_type}' | Debtor='{debtor[:30]}' | Secured='{secured_party[:30]}' | Status='{status}'")
                     
-                    # Only process if it's a tax lien from IRS (check both doc_type and secured_party)
-                    is_irs = "internal revenue" in secured_party.lower() or "internal revenue" in debtor.lower()
-                    is_lien = "federal tax lien" in doc_type.lower() or "tax lien" in doc_type.lower()
+                    # Temporarily disabled strict filtering to debug
+                    # is_irs = "internal revenue" in secured_party.lower() or "internal revenue" in debtor.lower()
+                    # is_lien = "federal tax lien" in doc_type.lower() or "tax lien" in doc_type.lower()
                     
-                    if not is_irs:
-                        print(f"  -> Skipping: not IRS (secured='{secured_party}')")
-                        continue
-                    
-                    if not is_lien:
-                        print(f"  -> Skipping: not a tax lien (type='{doc_type}')")
-                        continue
+                    # Process ALL rows for debugging
+                    print(f"  -> Processing row (no filter)")
                         
                     print(f"\n✓ Processing IRS lien: {debtor[:50]}")
                     
