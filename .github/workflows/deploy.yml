@@ -1,4 +1,4 @@
-name: Deploy to Cloud Functions
+name: Deploy to Cloud Run
 
 on:
   push:
@@ -8,18 +8,13 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
     
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-
-    - name: Setup Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-
-    - name: Install dependencies
-      run: pip install -r requirements.txt
 
     - name: Authenticate to Google Cloud
       uses: google-github-actions/auth@v2
@@ -29,20 +24,22 @@ jobs:
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v2
 
-    - name: Create env.yaml
-      run: |
-        cat > env.yaml << EOF
-        SHEETS_ID: ${{ secrets.SHEETS_ID }}
-        EOF
+    - name: Configure Docker
+      run: gcloud auth configure-docker
 
-    - name: Deploy Function
+    - name: Build and Push Container
       run: |
-        gcloud functions deploy lien-extraction \
-          --runtime python311 \
-          --trigger-http \
-          --entry-point main \
-          --memory 1GiB \
-          --timeout 300s \
+        docker build -t gcr.io/lien-extraction-sa/lien-extraction:${{ github.sha }} .
+        docker push gcr.io/lien-extraction-sa/lien-extraction:${{ github.sha }}
+
+    - name: Deploy to Cloud Run
+      run: |
+        gcloud run deploy lien-extraction \
+          --image gcr.io/lien-extraction-sa/lien-extraction:${{ github.sha }} \
+          --platform managed \
           --region us-central1 \
-          --env-vars-file env.yaml \
+          --allow-unauthenticated \
+          --memory 2Gi \
+          --timeout 300s \
+          --set-env-vars SHEETS_ID=${{ secrets.SHEETS_ID }} \
           --set-secrets GOOGLE_SERVICE_ACCOUNT_JSON=service-account-key:latest
