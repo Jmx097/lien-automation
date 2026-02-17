@@ -228,6 +228,14 @@ class CAUCCScraper:
                         html = await self.page.content()
                         debug_info.append(f"After search - HTML length: {len(html)} bytes")
                         
+                        # Save HTML for debugging
+                        try:
+                            with open('/tmp/ca_sos_results.html', 'w', encoding='utf-8') as f:
+                                f.write(html)
+                            debug_info.append("✓ HTML saved to /tmp/ca_sos_results.html")
+                        except Exception as save_error:
+                            debug_info.append(f"Could not save HTML: {str(save_error)}")
+                        
                         # Get new URL
                         new_url = self.page.url
                         debug_info.append(f"URL after search: {new_url}")
