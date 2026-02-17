@@ -180,8 +180,8 @@ class CAUCCScraper:
             print(f"Received {len(html)} bytes after JS execution")
             return self.parse_results(html)
     
-    async def scrape(self, from_date: str = None, to_date: str = None, max_results: int = 50) -> List[LienRecord]:
-        """Main scraping method"""
+    async def scrape_debug(self, from_date: str = None, to_date: str = None, max_results: int = 50) -> tuple:
+        """Scrape with debug info"""
         # Calculate default date range (last 30 days for better chances)
         if not from_date or not to_date:
             today = datetime.now()
@@ -189,20 +189,68 @@ class CAUCCScraper:
             to_date = today.strftime("%m/%d/%Y")
             from_date = month_ago.strftime("%m/%d/%Y")
         
-        print(f"\n{'='*60}")
-        print(f"CA UCC Lien Scraper (ScrapingBee)")
-        print(f"Date Range: {from_date} to {to_date}")
-        print(f"{'='*60}\n")
+        debug_info = []
+        debug_info.append(f"Date Range: {from_date} to {to_date}")
         
         try:
             # Use JS scenario to execute the search
-            results = await self.scrape_with_js_scenario(from_date, to_date, max_results)
+            from_date_iso = datetime.strptime(from_date, "%m/%d/%Y").strftime("%Y-%m-%d")
+            to_date_iso = datetime.strptime(to_date, "%m/%d/%Y").strftime("%Y-%m-%d")
             
-            print(f"\nFound {len(results)} IRS lien records")
-            return [LienRecord(**r) for r in results[:max_results]]
+            js_scenario = json.dumps({
+                "instructions": [
+                    {"wait": 3000},
+                    {"click": "button.advanced-search-toggle"},
+                    {"wait": 1500},
+                    {"fill": ["input[type='text']", "internal revenue service"]},
+                    {"fill": ["input[type='date']:nth-of-type(1)", from_date_iso]},
+                    {"fill": ["input[type='date']:nth-of-type(2)", to_date_iso]},
+                    {"click": "button[type='submit']"},
+                    {"wait": 5000}
+                ]
+            })
             
+            scrapingbee_url = (
+                f"https://app.scrapingbee.com/api/v1/?"
+                f"api_key={self.api_key}&"
+                f"url={self.BASE_URL}&"
+                f"render_js=true&"
+                f"wait=10000&"
+                f"js_scenario={js_scenario}"
+            )
+            
+            debug_info.append(f"Fetching: {self.BASE_URL}")
+            async with self.session.get(scrapingbee_url) as response:
+                html = await response.text()
+                debug_info.append(f"HTML length: {len(html)} bytes")
+                debug_info.append(f"HTML preview: {html[:500]}...")
+                
+                # Parse
+                from bs4 import BeautifulSoup
+                soup = BeautifulSoup(html, 'html.parser')
+                tables = soup.find_all('table')
+                debug_info.append(f"Tables found: {len(tables)}")
+                
+                for i, table in enumerate(tables):
+                    rows = table.find_all('tr')
+                    debug_info.append(f"Table {i}: {len(rows)} rows")
+                    if rows and i == 0:
+                        # Show first row cells
+                        cells = rows[0].find_all(['th', 'td'])
+                        debug_info.append(f"First row headers: {[c.get_text(strip=True)[:30] for c in cells]}")
+                
+                results = self.parse_results(html)
+                debug_info.append(f"Records parsed: {len(results)}")
+                
+                return [LienRecord(**r) for r in results[:max_results]], debug_info
+                
         except Exception as e:
-            print(f"Error during scraping: {e}")
+            debug_info.append(f"ERROR: {str(e)}")
             import traceback
-            traceback.print_exc()
-            return []
+            debug_info.append(traceback.format_exc()[:500])
+            return [], debug_info
+    
+    async def scrape(self, from_date: str = None, to_date: str = None, max_results: int = 50) -> List[LienRecord]:
+        """Main scraping method"""
+        records, _ = await self.scrape_debug(from_date, to_date, max_results)
+        return records

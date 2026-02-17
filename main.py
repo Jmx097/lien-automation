@@ -71,19 +71,23 @@ async def process_site(site_id: str, max_results: int = 50) -> Dict[str, Any]:
             else:
                 try:
                     async with CAUCCScraper(api_key=scrapingbee_key) as scraper:
-                        # Calculate date range (last 7 days)
+                        # Calculate date range (last 30 days for better chances)
                         from datetime import datetime, timedelta
                         to_date = datetime.now()
-                        from_date = to_date - timedelta(days=7)
+                        from_date = to_date - timedelta(days=30)
                         
                         from_date_str = from_date.strftime("%m/%d/%Y")
                         to_date_str = to_date.strftime("%m/%d/%Y")
                         
-                        lien_records = await scraper.scrape(
+                        # Use debug mode to get detailed info
+                        lien_records, debug_info = await scraper.scrape_debug(
                             from_date=from_date_str,
                             to_date=to_date_str,
                             max_results=max_results
                         )
+                        
+                        # Store debug info in results
+                        site_results['debug_info'] = debug_info
                         
                         # Convert to raw record format
                         raw_records = []
