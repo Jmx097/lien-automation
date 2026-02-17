@@ -93,24 +93,29 @@ class CAUCCScraper:
                 debug_info.append(f"Direct HTTP status: {response.status}")
                 debug_info.append(f"Direct HTTP length: {len(html)} bytes")
                 
-                if len(html) > 1000:
-                    from bs4 import BeautifulSoup
-                    soup = BeautifulSoup(html, 'html.parser')
-                    title = soup.find('title')
-                    if title:
-                        debug_info.append(f"Direct HTTP title: {title.get_text()}")
-                    
-                    # Look for forms
-                    forms = soup.find_all('form')
-                    debug_info.append(f"Forms found: {len(forms)}")
-                    
-                    # Look for iframes
-                    iframes = soup.find_all('iframe')
-                    debug_info.append(f"Iframes found: {len(iframes)}")
-                    for i, iframe in enumerate(iframes[:2]):
-                        debug_info.append(f"  Iframe {i} src: {iframe.get('src', 'N/A')[:100]}")
-                    
-                    return [], debug_info
+                # Always parse to see what we got
+                from bs4 import BeautifulSoup
+                soup = BeautifulSoup(html, 'html.parser')
+                title = soup.find('title')
+                if title:
+                    debug_info.append(f"Direct HTTP title: {title.get_text()}")
+                
+                # Show first 500 chars of HTML
+                debug_info.append(f"Direct HTML content: {html[:500]}...")
+                
+                # Look for redirect or error indicators
+                if 'redirect' in html.lower() or 'location' in html.lower():
+                    debug_info.append("WARNING: Possible redirect detected")
+                
+                # Look for forms
+                forms = soup.find_all('form')
+                debug_info.append(f"Forms found: {len(forms)}")
+                
+                # Look for iframes
+                iframes = soup.find_all('iframe')
+                debug_info.append(f"Iframes found: {len(iframes)}")
+                for i, iframe in enumerate(iframes[:2]):
+                    debug_info.append(f"  Iframe {i} src: {iframe.get('src', 'N/A')[:100]}")
         except Exception as e:
             debug_info.append(f"Direct HTTP failed: {str(e)}")
         
