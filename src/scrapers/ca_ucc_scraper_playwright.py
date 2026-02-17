@@ -171,12 +171,32 @@ class CAUCCScraper:
                         debug_info.append(f"✗ Failed to fill search input: {str(fill_error)}")
                         return [], debug_info
                     
-                    # Find and click submit
+                    # Find and click submit - try multiple selectors
                     debug_info.append("Looking for submit button...")
-                    submit_btn = await self.page.query_selector('button[type="submit"], input[type="submit"]')
+                    
+                    # Try various selectors
+                    selectors = [
+                        'button[type="submit"]',
+                        'input[type="submit"]', 
+                        'button:has-text("Search")',
+                        'button:has-text("Submit")',
+                        'button.btn-primary',
+                        'button.search-button',
+                        'button[class*="search"]',
+                        'button',
+                    ]
+                    
+                    submit_btn = None
+                    for selector in selectors:
+                        submit_btn = await self.page.query_selector(selector)
+                        if submit_btn:
+                            debug_info.append(f"Found submit button with selector: {selector}")
+                            break
+                    
                     debug_info.append(f"Submit button found: {submit_btn is not None}")
+                    
                     if submit_btn:
-                        debug_info.append("Found submit button, clicking...")
+                        debug_info.append("Clicking submit button...")
                         try:
                             await submit_btn.click()
                             debug_info.append("✓ Submit button clicked")
