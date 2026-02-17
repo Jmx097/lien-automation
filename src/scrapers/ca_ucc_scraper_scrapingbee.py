@@ -199,14 +199,14 @@ class CAUCCScraper:
             
             js_scenario = json.dumps({
                 "instructions": [
-                    {"wait": 3000},
+                    {"wait": 1000},  # Reduced from 3000
                     {"click": "button.advanced-search-toggle"},
-                    {"wait": 1500},
+                    {"wait": 500},   # Reduced from 1500
                     {"fill": ["input[type='text']", "internal revenue service"]},
                     {"fill": ["input[type='date']:nth-of-type(1)", from_date_iso]},
                     {"fill": ["input[type='date']:nth-of-type(2)", to_date_iso]},
                     {"click": "button[type='submit']"},
-                    {"wait": 5000}
+                    {"wait": 3000}   # Reduced from 5000
                 ]
             })
             
@@ -215,7 +215,7 @@ class CAUCCScraper:
                 f"api_key={self.api_key}&"
                 f"url={self.BASE_URL}&"
                 f"render_js=true&"
-                f"wait=10000&"
+                f"wait=5000&"     # Reduced from 10000
                 f"js_scenario={js_scenario}"
             )
             
