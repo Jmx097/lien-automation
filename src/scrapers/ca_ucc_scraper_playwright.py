@@ -108,9 +108,9 @@ class CAUCCScraper:
         """Scrape with debug info"""
         if not from_date or not to_date:
             today = datetime.now()
-            month_ago = today - timedelta(days=30)
+            three_months_ago = today - timedelta(days=90)
             to_date = today.strftime("%m/%d/%Y")
-            from_date = month_ago.strftime("%m/%d/%Y")
+            from_date = three_months_ago.strftime("%m/%d/%Y")
         
         debug_info = []
         debug_info.append(f"Date Range: {from_date} to {to_date}")
@@ -255,6 +255,28 @@ class CAUCCScraper:
                         # Try to extract any visible text from result area
                         result_divs = soup.find_all('div', class_=lambda x: x and ('result' in x.lower() if x else False))
                         debug_info.append(f"Result divs found: {len(result_divs)}")
+                        
+                        # Look for data rows with specific patterns
+                        data_rows = []
+                        for table in tables:
+                            for row in table.find_all('tr'):
+                                cells = row.find_all(['td', 'th'])
+                                if len(cells) >= 3:  # At least 3 columns
+                                    row_text = ' '.join([cell.get_text(strip=True) for cell in cells])
+                                    if 'internal revenue' in row_text.lower() or 'lien' in row_text.lower():
+                                        data_rows.append(row_text[:100])
+                        
+                        if data_rows:
+                            debug_info.append(f"✓ Found {len(data_rows)} data rows matching criteria")
+                            for i, row_text in enumerate(data_rows[:3]):
+                                debug_info.append(f"  Row {i}: {row_text}")
+                        else:
+                            # Try to find any divs with substantial content
+                            content_divs = soup.find_all('div', text=lambda t: t and len(t.strip()) > 50)
+                            debug_info.append(f"Content divs (>50 chars): {len(content_divs)}")
+                            for i, div in enumerate(content_divs[:3]):
+                                text = div.get_text(strip=True)[:150]
+                                debug_info.append(f"  Content {i}: {text}")
                         
             except Exception as e:
                 debug_info.append(f"Form interaction failed: {str(e)}")
