@@ -211,12 +211,16 @@ class CAUCCScraper:
             })
             
             # Try without JS scenario first - just basic render
+            # Try direct search URL with query params instead of JS scenario
+            # CA SOS format: https://bizfileonline.sos.ca.gov/search/ucc?filingDateFrom=01%2F01%2F2026&filingDateTo=02%2F17%2F2026&searchType=UCC&searchString=internal%20revenue%20service
+            search_url = f"{self.BASE_URL}?filingDateFrom={from_date.replace('/', '%2F')}&filingDateTo={to_date.replace('/', '%2F')}&searchType=UCC&searchString=internal%20revenue%20service"
+            
             scrapingbee_url = (
                 f"https://app.scrapingbee.com/api/v1/?"
                 f"api_key={self.api_key}&"
-                f"url={self.BASE_URL}&"
+                f"url={search_url}&"
                 f"render_js=true&"
-                f"wait=8000&"
+                f"wait=10000&"
                 f"stealth_proxy=true"
             )
             
