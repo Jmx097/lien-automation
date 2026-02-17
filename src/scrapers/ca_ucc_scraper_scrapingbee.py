@@ -79,6 +79,8 @@ class CAUCCScraper:
         async with self.session.get(scrapingbee_url) as response:
             html = await response.text()
             print(f"Received {len(html)} bytes")
+            # Debug: save first 1000 chars to see what we got
+            print(f"HTML preview: {html[:500]}...")
             return html
             
     def parse_results(self, html: str) -> List[Dict]:
@@ -144,14 +146,48 @@ class CAUCCScraper:
                     
         return records
         
+    async def scrape_with_js_scenario(self, from_date: str, to_date: str, max_results: int = 50) -> List[LienRecord]:
+        """Use ScrapingBee JS scenario to execute search"""
+        # Build JS scenario to interact with the page
+        from_date_iso = datetime.strptime(from_date, "%m/%d/%Y").strftime("%Y-%m-%d")
+        to_date_iso = datetime.strptime(to_date, "%m/%d/%Y").strftime("%Y-%m-%d")
+        
+        js_scenario = json.dumps({
+            "instructions": [
+                {"wait": 3000},  # Wait for page load
+                {"click": "button.advanced-search-toggle"},  # Click Advanced
+                {"wait": 1500},
+                {"fill": ["input[type='text']", "internal revenue service"]},  # Search term
+                {"fill": ["input[type='date']:nth-of-type(1)", from_date_iso]},  # From date
+                {"fill": ["input[type='date']:nth-of-type(2)", to_date_iso]},  # To date
+                {"click": "button[type='submit']"},  # Submit
+                {"wait": 5000}  # Wait for results
+            ]
+        })
+        
+        scrapingbee_url = (
+            f"https://app.scrapingbee.com/api/v1/?"
+            f"api_key={self.api_key}&"
+            f"url={self.BASE_URL}&"
+            f"render_js=true&"
+            f"wait=10000&"
+            f"js_scenario={js_scenario}"
+        )
+        
+        print(f"Executing JS scenario on: {self.BASE_URL}")
+        async with self.session.get(scrapingbee_url) as response:
+            html = await response.text()
+            print(f"Received {len(html)} bytes after JS execution")
+            return self.parse_results(html)
+    
     async def scrape(self, from_date: str = None, to_date: str = None, max_results: int = 50) -> List[LienRecord]:
         """Main scraping method"""
-        # Calculate default date range (last 7 days)
+        # Calculate default date range (last 30 days for better chances)
         if not from_date or not to_date:
             today = datetime.now()
-            week_ago = today - timedelta(days=7)
+            month_ago = today - timedelta(days=30)
             to_date = today.strftime("%m/%d/%Y")
-            from_date = week_ago.strftime("%m/%d/%Y")
+            from_date = month_ago.strftime("%m/%d/%Y")
         
         print(f"\n{'='*60}")
         print(f"CA UCC Lien Scraper (ScrapingBee)")
@@ -159,12 +195,8 @@ class CAUCCScraper:
         print(f"{'='*60}\n")
         
         try:
-            # Note: ScrapingBee will execute the search via JavaScript
-            # We'll need to construct the search URL with parameters
-            # For now, fetch the base page to test
-            
-            html = await self.fetch_page(self.BASE_URL, wait_ms=8000)
-            results = self.parse_results(html)
+            # Use JS scenario to execute the search
+            results = await self.scrape_with_js_scenario(from_date, to_date, max_results)
             
             print(f"\nFound {len(results)} IRS lien records")
             return [LienRecord(**r) for r in results[:max_results]]
