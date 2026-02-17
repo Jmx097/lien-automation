@@ -198,8 +198,24 @@ class CAUCCScraper:
                     if submit_btn:
                         debug_info.append("Clicking submit button...")
                         try:
-                            await submit_btn.click()
-                            debug_info.append("✓ Submit button clicked")
+                            # Wait for button to be enabled
+                            debug_info.append("Waiting for button to be enabled...")
+                            await asyncio.sleep(2)
+                            
+                            # Check if button is enabled
+                            is_enabled = await submit_btn.is_enabled()
+                            debug_info.append(f"Button enabled: {is_enabled}")
+                            
+                            if not is_enabled:
+                                debug_info.append("Button still disabled, trying Enter key...")
+                                # Press Tab then Enter to trigger form validation
+                                await search_input.press('Tab')
+                                await asyncio.sleep(1)
+                                await self.page.keyboard.press('Enter')
+                                debug_info.append("✓ Enter key pressed")
+                            else:
+                                await submit_btn.click()
+                                debug_info.append("✓ Submit button clicked")
                         except Exception as click_error:
                             debug_info.append(f"✗ Submit click failed: {str(click_error)}")
                             return [], debug_info
