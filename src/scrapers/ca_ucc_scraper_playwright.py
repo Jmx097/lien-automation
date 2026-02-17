@@ -172,10 +172,17 @@ class CAUCCScraper:
                         return [], debug_info
                     
                     # Find and click submit
+                    debug_info.append("Looking for submit button...")
                     submit_btn = await self.page.query_selector('button[type="submit"], input[type="submit"]')
+                    debug_info.append(f"Submit button found: {submit_btn is not None}")
                     if submit_btn:
                         debug_info.append("Found submit button, clicking...")
-                        await submit_btn.click()
+                        try:
+                            await submit_btn.click()
+                            debug_info.append("✓ Submit button clicked")
+                        except Exception as click_error:
+                            debug_info.append(f"✗ Submit click failed: {str(click_error)}")
+                            return [], debug_info
                         
                         # Wait for results to load
                         debug_info.append("Waiting 8 seconds for results...")
