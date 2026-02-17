@@ -146,40 +146,6 @@ class CAUCCScraper:
                     
         return records
         
-    async def scrape_with_js_scenario(self, from_date: str, to_date: str, max_results: int = 50) -> List[LienRecord]:
-        """Use ScrapingBee JS scenario to execute search"""
-        # Build JS scenario to interact with the page
-        from_date_iso = datetime.strptime(from_date, "%m/%d/%Y").strftime("%Y-%m-%d")
-        to_date_iso = datetime.strptime(to_date, "%m/%d/%Y").strftime("%Y-%m-%d")
-        
-        js_scenario = json.dumps({
-            "instructions": [
-                {"wait": 3000},  # Wait for page load
-                {"click": "button.advanced-search-toggle"},  # Click Advanced
-                {"wait": 1500},
-                {"fill": ["input[type='text']", "internal revenue service"]},  # Search term
-                {"fill": ["input[type='date']:nth-of-type(1)", from_date_iso]},  # From date
-                {"fill": ["input[type='date']:nth-of-type(2)", to_date_iso]},  # To date
-                {"click": "button[type='submit']"},  # Submit
-                {"wait": 5000}  # Wait for results
-            ]
-        })
-        
-        scrapingbee_url = (
-            f"https://app.scrapingbee.com/api/v1/?"
-            f"api_key={self.api_key}&"
-            f"url={self.BASE_URL}&"
-            f"render_js=true&"
-            f"wait=10000&"
-            f"js_scenario={js_scenario}"
-        )
-        
-        print(f"Executing JS scenario on: {self.BASE_URL}")
-        async with self.session.get(scrapingbee_url) as response:
-            html = await response.text()
-            print(f"Received {len(html)} bytes after JS execution")
-            return self.parse_results(html)
-    
     async def scrape_debug(self, from_date: str = None, to_date: str = None, max_results: int = 50) -> tuple:
         """Scrape with debug info"""
         # Calculate default date range (last 30 days for better chances)
@@ -193,33 +159,11 @@ class CAUCCScraper:
         debug_info.append(f"Date Range: {from_date} to {to_date}")
         
         try:
-            # Use JS scenario to execute the search
-            from_date_iso = datetime.strptime(from_date, "%m/%d/%Y").strftime("%Y-%m-%d")
-            to_date_iso = datetime.strptime(to_date, "%m/%d/%Y").strftime("%Y-%m-%d")
-            
-            js_scenario = json.dumps({
-                "instructions": [
-                    {"wait": 1000},  # Reduced from 3000
-                    {"click": "button.advanced-search-toggle"},
-                    {"wait": 500},   # Reduced from 1500
-                    {"fill": ["input[type='text']", "internal revenue service"]},
-                    {"fill": ["input[type='date']:nth-of-type(1)", from_date_iso]},
-                    {"fill": ["input[type='date']:nth-of-type(2)", to_date_iso]},
-                    {"click": "button[type='submit']"},
-                    {"wait": 3000}   # Reduced from 5000
-                ]
-            })
-            
-            # Try without JS scenario first - just basic render
-            # Use base URL - JS will handle form interaction
-            # The search requires form submission, not query params
-            search_url = self.BASE_URL
-            
-            # Simple fetch - just get the page HTML
+            # Simple fetch - just stealth proxy, no extract_rules
             scrapingbee_url = (
                 f"https://app.scrapingbee.com/api/v1/?"
                 f"api_key={self.api_key}&"
-                f"url={search_url}&"
+                f"url={self.BASE_URL}&"
                 f"render_js=true&"
                 f"wait=10000&"
                 f"stealth_proxy=true"
@@ -229,7 +173,7 @@ class CAUCCScraper:
             async with self.session.get(scrapingbee_url) as response:
                 html = await response.text()
                 debug_info.append(f"HTML length: {len(html)} bytes")
-                debug_info.append(f"HTML preview: {html[:1000]}...")
+                debug_info.append(f"HTML first 500: {html[:500]}...")
                 
                 # Parse
                 from bs4 import BeautifulSoup
@@ -243,13 +187,11 @@ class CAUCCScraper:
                 div_rows = soup.find_all('div', class_=lambda x: x and ('row' in x.lower() if x else False))
                 debug_info.append(f"Div rows found: {len(div_rows)}")
                 
-                # Look for results container
-                results_containers = soup.find_all(['div', 'section'], class_=lambda x: x and any(term in (x.lower() if x else '') for term in ['result', 'search', 'data', 'table']))
-                debug_info.append(f"Result containers: {len(results_containers)}")
-                
-                # Try to find any element with "lien" or "ucc" in text
-                lien_mentions = len([t for t in soup.find_all(text=True) if 'lien' in t.lower()])
-                debug_info.append(f"'Lien' mentions in page: {lien_mentions}")
+                # Look for iframe content
+                iframes = soup.find_all('iframe')
+                debug_info.append(f"Iframes found: {len(iframes)}")
+                for i, iframe in enumerate(iframes[:3]):
+                    debug_info.append(f"  Iframe {i}: src={iframe.get('src', 'N/A')[:80]}")
                 
                 # Check page title
                 title = soup.find('title')
