@@ -215,7 +215,8 @@ class CAUCCScraper:
                 f"api_key={self.api_key}&"
                 f"url={self.BASE_URL}&"
                 f"render_js=true&"
-                f"wait=5000&"     # Reduced from 10000
+                f"wait=5000&"
+                f"stealth_proxy=true&"  # Bypass bot detection
                 f"js_scenario={js_scenario}"
             )
             
