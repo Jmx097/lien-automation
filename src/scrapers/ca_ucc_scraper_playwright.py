@@ -51,7 +51,8 @@ class LienRecord:
 class CAUCCScraper:
     BASE_URL = "https://bizfileonline.sos.ca.gov/search/ucc"
     
-    def __init__(self):
+    def __init__(self, api_key=None):
+        # api_key parameter accepted for compatibility but not used
         self.browser = None
         self.context = None
         self.page = None
