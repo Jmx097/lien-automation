@@ -60,7 +60,7 @@ async def process_site(site_id: str, max_results: int = 50) -> Dict[str, Any]:
             logger.warning("Cook County scraper not yet implemented")
             raw_records = []
         elif site_id == '20':  # CA UCC
-            from src.scrapers.ca_ucc_scraper_direct import CAUCCScraper
+            from src.scrapers.ca_ucc_scraper_playwright import CAUCCScraper
             
             # Get ScrapingBee API key
             scrapingbee_key = os.getenv('SCRAPINGBEE_API_KEY')
