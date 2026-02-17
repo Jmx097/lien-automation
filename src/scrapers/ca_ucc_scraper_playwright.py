@@ -164,18 +164,41 @@ class CAUCCScraper:
                         debug_info.append("Found submit button, clicking...")
                         await submit_btn.click()
                         
-                        # Wait for results
-                        await asyncio.sleep(5)
+                        # Wait for results to load
+                        debug_info.append("Waiting 8 seconds for results...")
+                        await asyncio.sleep(8)
                         
                         # Check for results
                         html = await self.page.content()
                         debug_info.append(f"After search - HTML length: {len(html)} bytes")
+                        
+                        # Get new URL
+                        new_url = self.page.url
+                        debug_info.append(f"URL after search: {new_url}")
+                        
+                        # Check for error messages
+                        if 'error' in html.lower() or 'no results' in html.lower():
+                            debug_info.append("WARNING: Possible error or no results message")
                         
                         # Parse results
                         from bs4 import BeautifulSoup
                         soup = BeautifulSoup(html, 'html.parser')
                         tables = soup.find_all('table')
                         debug_info.append(f"Tables found after search: {len(tables)}")
+                        
+                        # Look for result rows
+                        rows = soup.find_all('tr')
+                        debug_info.append(f"Total rows found: {len(rows)}")
+                        
+                        # Check for specific text patterns
+                        if 'internal revenue' in html.lower():
+                            debug_info.append("✓ Page contains 'internal revenue' text")
+                        if 'lien' in html.lower():
+                            debug_info.append(f"✓ Page contains 'lien' text ({html.lower().count('lien')} times)")
+                        
+                        # Try to extract any visible text from result area
+                        result_divs = soup.find_all('div', class_=lambda x: x and ('result' in x.lower() if x else False))
+                        debug_info.append(f"Result divs found: {len(result_divs)}")
                         
             except Exception as e:
                 debug_info.append(f"Form interaction failed: {str(e)}")
