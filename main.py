@@ -39,7 +39,7 @@ from src.utils import logger, ensure_directories
 SHEET_ID = os.getenv('SHEETS_ID', '1qpstqj-kQje69cFPb-txNV48hpicd-N_4bA1mbD1854')
 
 
-async def process_site(site_id: str) -> Dict[str, Any]:
+async def process_site(site_id: str, max_results: int = 50) -> Dict[str, Any]:
     """Process a single site and return results"""
     logger.info(f"Processing site {site_id}")
     
@@ -216,7 +216,8 @@ def main(request):
             
         # Get sites to process (default to all)
         sites = request_json.get('sites', ['12', '10', '20'])
-        logger.info(f"Processing sites: {sites}")
+        max_results = request_json.get('max_results', 50)
+        logger.info(f"Processing sites: {sites} with max_results={max_results}")
         
         # Process all sites
         all_results = []
@@ -224,7 +225,7 @@ def main(request):
         for site_id in sites:
             try:
                 # Run async processing in sync context
-                result = asyncio.run(process_site(site_id))
+                result = asyncio.run(process_site(site_id, max_results))
                 all_results.append(result)
             except Exception as e:
                 logger.error(f"Failed to process site {site_id}: {e}")
