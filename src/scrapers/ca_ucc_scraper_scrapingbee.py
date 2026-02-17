@@ -210,14 +210,14 @@ class CAUCCScraper:
                 ]
             })
             
+            # Try without JS scenario first - just basic render
             scrapingbee_url = (
                 f"https://app.scrapingbee.com/api/v1/?"
                 f"api_key={self.api_key}&"
                 f"url={self.BASE_URL}&"
                 f"render_js=true&"
-                f"wait=5000&"
-                f"stealth_proxy=true&"  # Bypass bot detection
-                f"js_scenario={js_scenario}"
+                f"wait=8000&"
+                f"stealth_proxy=true"
             )
             
             debug_info.append(f"Fetching: {self.BASE_URL}")
