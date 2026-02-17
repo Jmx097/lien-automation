@@ -233,16 +233,27 @@ class CAUCCScraper:
                 # Parse
                 from bs4 import BeautifulSoup
                 soup = BeautifulSoup(html, 'html.parser')
+                
+                # Debug: Look for various result container patterns
                 tables = soup.find_all('table')
                 debug_info.append(f"Tables found: {len(tables)}")
                 
-                for i, table in enumerate(tables):
-                    rows = table.find_all('tr')
-                    debug_info.append(f"Table {i}: {len(rows)} rows")
-                    if rows and i == 0:
-                        # Show first row cells
-                        cells = rows[0].find_all(['th', 'td'])
-                        debug_info.append(f"First row headers: {[c.get_text(strip=True)[:30] for c in cells]}")
+                # CA SOS might use div-based tables
+                div_rows = soup.find_all('div', class_=lambda x: x and ('row' in x.lower() if x else False))
+                debug_info.append(f"Div rows found: {len(div_rows)}")
+                
+                # Look for results container
+                results_containers = soup.find_all(['div', 'section'], class_=lambda x: x and any(term in (x.lower() if x else '') for term in ['result', 'search', 'data', 'table']))
+                debug_info.append(f"Result containers: {len(results_containers)}")
+                
+                # Try to find any element with "lien" or "ucc" in text
+                lien_mentions = len([t for t in soup.find_all(text=True) if 'lien' in t.lower()])
+                debug_info.append(f"'Lien' mentions in page: {lien_mentions}")
+                
+                # Check page title
+                title = soup.find('title')
+                if title:
+                    debug_info.append(f"Page title: {title.get_text()}")
                 
                 results = self.parse_results(html)
                 debug_info.append(f"Records parsed: {len(results)}")
