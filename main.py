@@ -82,7 +82,7 @@ async def process_site(site_id: str) -> Dict[str, Any]:
                         lien_records = await scraper.scrape(
                             from_date=from_date_str,
                             to_date=to_date_str,
-                            max_results=max_results_per_site
+                            max_results=max_results
                         )
                         
                         # Convert to raw record format
