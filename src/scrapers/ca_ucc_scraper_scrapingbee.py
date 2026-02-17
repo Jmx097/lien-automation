@@ -215,27 +215,28 @@ class CAUCCScraper:
             # The search requires form submission, not query params
             search_url = self.BASE_URL
             
-            # Build JS scenario to fill and submit form
-            js_scenario = {
-                "instructions": [
-                    {"wait_for": "#SearchForm_SearchCriteria_PartyName"},
-                    {"fill": ["#SearchForm_SearchCriteria_PartyName", "internal revenue service"]},
-                    {"click": "#SearchForm_SearchButton"},
-                    {"wait": 5000}
-                ]
+            # Use extract_rules to get iframe content
+            # CA SOS loads content in an iframe
+            extract_rules = {
+                "iframes": {
+                    "selector": "iframe",
+                    "output": {
+                        "src": {"selector": "iframe", "output": "@src"}
+                    }
+                }
             }
             
             import urllib.parse
-            js_scenario_str = urllib.parse.quote(json.dumps(js_scenario))
+            extract_rules_str = urllib.parse.quote(json.dumps(extract_rules))
             
             scrapingbee_url = (
                 f"https://app.scrapingbee.com/api/v1/?"
                 f"api_key={self.api_key}&"
                 f"url={search_url}&"
                 f"render_js=true&"
-                f"wait=10000&"
+                f"wait=15000&"
                 f"stealth_proxy=true&"
-                f"js_scenario={js_scenario_str}"
+                f"extract_rules={extract_rules_str}"
             )
             
             debug_info.append(f"Fetching: {self.BASE_URL}")
