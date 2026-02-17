@@ -211,9 +211,22 @@ class CAUCCScraper:
             })
             
             # Try without JS scenario first - just basic render
-            # Try direct search URL with query params instead of JS scenario
-            # CA SOS format: https://bizfileonline.sos.ca.gov/search/ucc?filingDateFrom=01%2F01%2F2026&filingDateTo=02%2F17%2F2026&searchType=UCC&searchString=internal%20revenue%20service
-            search_url = f"{self.BASE_URL}?filingDateFrom={from_date.replace('/', '%2F')}&filingDateTo={to_date.replace('/', '%2F')}&searchType=UCC&searchString=internal%20revenue%20service"
+            # Use base URL - JS will handle form interaction
+            # The search requires form submission, not query params
+            search_url = self.BASE_URL
+            
+            # Build JS scenario to fill and submit form
+            js_scenario = {
+                "instructions": [
+                    {"wait_for": "#SearchForm_SearchCriteria_PartyName"},
+                    {"fill": ["#SearchForm_SearchCriteria_PartyName", "internal revenue service"]},
+                    {"click": "#SearchForm_SearchButton"},
+                    {"wait": 5000}
+                ]
+            }
+            
+            import urllib.parse
+            js_scenario_str = urllib.parse.quote(json.dumps(js_scenario))
             
             scrapingbee_url = (
                 f"https://app.scrapingbee.com/api/v1/?"
@@ -221,7 +234,8 @@ class CAUCCScraper:
                 f"url={search_url}&"
                 f"render_js=true&"
                 f"wait=10000&"
-                f"stealth_proxy=true"
+                f"stealth_proxy=true&"
+                f"js_scenario={js_scenario_str}"
             )
             
             debug_info.append(f"Fetching: {self.BASE_URL}")
