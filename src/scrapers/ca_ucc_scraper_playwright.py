@@ -137,6 +137,14 @@ class CAUCCScraper:
             debug_info.append(f"HTML length: {len(html)} bytes")
             debug_info.append(f"HTML first 500: {html[:500]}...")
             
+            # Take screenshot for debugging (save to /tmp)
+            try:
+                screenshot_path = "/tmp/ca_sos_screenshot.png"
+                await self.page.screenshot(path=screenshot_path, full_page=True)
+                debug_info.append(f"✓ Screenshot saved to {screenshot_path}")
+            except Exception as screenshot_error:
+                debug_info.append(f"Screenshot failed: {str(screenshot_error)}")
+            
             # Look for iframes
             iframes = await self.page.query_selector_all('iframe')
             debug_info.append(f"Iframes found: {len(iframes)}")
@@ -156,7 +164,12 @@ class CAUCCScraper:
                 search_input = await self.page.query_selector('input[type="text"]')
                 if search_input:
                     debug_info.append("Found search input, filling...")
-                    await search_input.fill('internal revenue service')
+                    try:
+                        await search_input.fill('internal revenue service')
+                        debug_info.append("✓ Search input filled successfully")
+                    except Exception as fill_error:
+                        debug_info.append(f"✗ Failed to fill search input: {str(fill_error)}")
+                        return [], debug_info
                     
                     # Find and click submit
                     submit_btn = await self.page.query_selector('button[type="submit"], input[type="submit"]')
