@@ -215,35 +215,21 @@ class CAUCCScraper:
             # The search requires form submission, not query params
             search_url = self.BASE_URL
             
-            # Use extract_rules to get iframe content
-            # CA SOS loads content in an iframe
-            extract_rules = {
-                "iframes": {
-                    "selector": "iframe",
-                    "output": {
-                        "src": {"selector": "iframe", "output": "@src"}
-                    }
-                }
-            }
-            
-            import urllib.parse
-            extract_rules_str = urllib.parse.quote(json.dumps(extract_rules))
-            
+            # Simple fetch - just get the page HTML
             scrapingbee_url = (
                 f"https://app.scrapingbee.com/api/v1/?"
                 f"api_key={self.api_key}&"
                 f"url={search_url}&"
                 f"render_js=true&"
-                f"wait=15000&"
-                f"stealth_proxy=true&"
-                f"extract_rules={extract_rules_str}"
+                f"wait=10000&"
+                f"stealth_proxy=true"
             )
             
             debug_info.append(f"Fetching: {self.BASE_URL}")
             async with self.session.get(scrapingbee_url) as response:
                 html = await response.text()
                 debug_info.append(f"HTML length: {len(html)} bytes")
-                debug_info.append(f"HTML preview: {html[:500]}...")
+                debug_info.append(f"HTML preview: {html[:1000]}...")
                 
                 # Parse
                 from bs4 import BeautifulSoup
