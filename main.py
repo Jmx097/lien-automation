@@ -40,6 +40,7 @@ from src.field_mapper import FieldMapper  # noqa: E402
 from src.accuracy_verifier import verify_records  # noqa: E402
 from src.sheets_integration import GoogleSheetsIntegration  # noqa: E402
 from src.utils import logger, ensure_directories  # noqa: E402
+from src.queue.api import enqueue_window  # noqa: E402
 
 # Configuration
 SHEET_ID = os.getenv('SHEETS_ID', '18C3Qrk3rEXZ9oNocIEUugFLh6q38DRw9JVwznTHoRN0')
