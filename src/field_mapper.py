@@ -5,7 +5,7 @@ Maps extracted PDF data to standardized Google Sheet format per Mapping Guide
 
 import re
 import logging
-from typing import Dict, List, Optional, Tuple, Any
+from typing import Dict, List, Optional, Any
 from dataclasses import dataclass
 
 logger = logging.getLogger(__name__)
@@ -37,7 +37,7 @@ class MappedRecord:
     city: MappedField
     state: MappedField
     zip_code: MappedField
-    
+
     def to_row(self) -> List[Any]:
         """Convert to Google Sheets row format"""
         return [
@@ -56,7 +56,7 @@ class MappedRecord:
             self.state.value,
             self.zip_code.value,
         ]
-        
+
     def get_confidence_scores(self) -> Dict[str, float]:
         """Get all confidence scores for verification"""
         return {
@@ -78,7 +78,7 @@ class MappedRecord:
 
 class FieldMapper:
     """Map extracted PDF fields to standardized format per Mapping Guide"""
-    
+
     # Site ID mapping - must match config/sites.json
     SITE_IDS = {
         'nyc_acris': '12',
@@ -86,7 +86,7 @@ class FieldMapper:
         'ca_sos': '20',
         'dallas_county': '11',
     }
-    
+
     # Liability types per site
     LIABILITY_TYPES = {
         'nyc_acris': 'IRS',
@@ -94,16 +94,16 @@ class FieldMapper:
         'ca_sos': 'IRS',
         'dallas_county': 'IRS',
     }
-    
+
     def __init__(self, site_key: str):
         self.site_key = site_key
         self.site_id = self.SITE_IDS.get(site_key, '00')
         self.liability_type = self.LIABILITY_TYPES.get(site_key, 'IRS')
-        
+
     def map_record(self, extracted_fields: Dict[str, str], raw_text: str) -> MappedRecord:
         """Map extracted fields to standardized record"""
         logger.info(f"Mapping record for site {self.site_key}")
-        
+
         # Map each field with confidence scoring
         record = MappedRecord(
             site_id=self.site_id,
@@ -121,13 +121,13 @@ class FieldMapper:
             state=self._map_state(extracted_fields, raw_text),
             zip_code=self._map_zip_code(extracted_fields, raw_text),
         )
-        
+
         return record
-        
+
     def _map_date(self, fields: Dict, raw_text: str) -> MappedField:
         """Map lien date field"""
         date_value = fields.get('lien_date') or fields.get('date')
-        
+
         if date_value:
             # Normalize date format
             normalized = self._normalize_date(date_value)
@@ -152,20 +152,20 @@ class FieldMapper:
                         source='inferred',
                         verification_note='Date inferred from document text'
                     )
-                    
+
         return MappedField(
             value=None,
             confidence=0.0,
             source='manual',
             verification_note='Date not found - manual review required'
         )
-        
+
     def _normalize_date(self, date_str: str) -> str:
         """Normalize date to MM/DD/YYYY format"""
         try:
             # Remove extra spaces
             date_str = date_str.strip()
-            
+
             # Handle various formats
             if '/' in date_str:
                 parts = date_str.split('/')
@@ -173,7 +173,7 @@ class FieldMapper:
                 parts = date_str.split('-')
             else:
                 return date_str
-                
+
             if len(parts) == 3:
                 month, day, year = parts
                 # Ensure 4-digit year
@@ -184,16 +184,16 @@ class FieldMapper:
                     else:
                         year = '20' + year
                 return f"{month.zfill(2)}/{day.zfill(2)}/{year}"
-                
+
         except Exception as e:
             logger.warning(f"Date normalization failed: {e}")
-            
+
         return date_str
-        
+
     def _map_amount(self, fields: Dict, raw_text: str) -> MappedField:
         """Map amount field - remove $, commas, and .00 decimals"""
         amount_value = fields.get('amount')
-        
+
         if amount_value:
             # Clean amount - remove $ and commas
             cleaned = re.sub(r'[$,]', '', amount_value)
@@ -210,7 +210,7 @@ class FieldMapper:
                 )
             except ValueError:
                 pass
-                
+
         # Try to find any dollar amount
         amount_pattern = r'\$?([\d,]+\.\d{2})'
         matches = re.findall(amount_pattern, raw_text)
@@ -224,14 +224,14 @@ class FieldMapper:
                 source='inferred',
                 verification_note='Largest amount in document used'
             )
-            
+
         return MappedField(
             value=None,
             confidence=0.0,
             source='manual',
             verification_note='Amount not found - manual review required'
         )
-        
+
     def _map_lead_type(self) -> MappedField:
         """Lead type is always 'Lien' for Federal Tax Liens"""
         return MappedField(
@@ -240,7 +240,7 @@ class FieldMapper:
             source='inferred',
             verification_note='Always Lien for Federal Tax Lien documents'
         )
-        
+
     def _map_lead_source(self) -> MappedField:
         """Lead source is always '777' per Mapping Guide"""
         return MappedField(
@@ -249,7 +249,7 @@ class FieldMapper:
             source='inferred',
             verification_note='Always 777 per Mapping Guide'
         )
-        
+
     def _map_liability_type(self) -> MappedField:
         """Liability type per site configuration"""
         return MappedField(
@@ -258,19 +258,19 @@ class FieldMapper:
             source='inferred',
             verification_note=f'Site {self.site_key} uses {self.liability_type}'
         )
-        
+
     def _map_business_personal(self, fields: Dict, raw_text: str) -> MappedField:
         """Determine if Business or Personal based on taxpayer name"""
         taxpayer = fields.get('taxpayer_name', '')
-        
+
         # Business indicators
         business_indicators = [
             'INC', 'LLC', 'CORP', 'CORPORATION', 'LTD', 'COMPANY',
             'ENTERPRISES', 'SERVICES', 'HOLDINGS', 'PARTNERSHIP'
         ]
-        
+
         taxpayer_upper = taxpayer.upper()
-        
+
         for indicator in business_indicators:
             if indicator in taxpayer_upper:
                 return MappedField(
@@ -279,7 +279,7 @@ class FieldMapper:
                     source='inferred',
                     verification_note=f'Business indicator "{indicator}" found in name'
                 )
-                
+
         # Check for individual indicators
         # If name looks like "First Last" (no business suffix), assume Personal
         if taxpayer and not any(ind in taxpayer_upper for ind in business_indicators):
@@ -289,18 +289,18 @@ class FieldMapper:
                 source='inferred',
                 verification_note='No business indicators found - assumed personal'
             )
-            
+
         return MappedField(
             value='Unknown',
             confidence=0.30,
             source='manual',
             verification_note='Could not determine business/personal - manual review'
         )
-        
+
     def _map_company(self, fields: Dict, raw_text: str) -> MappedField:
         """Map company name - only for Business leads"""
         business_personal = self._map_business_personal(fields, raw_text)
-        
+
         if business_personal.value == 'Business':
             company_name = fields.get('taxpayer_name', '')
             return MappedField(
@@ -316,11 +316,11 @@ class FieldMapper:
                 source='inferred',
                 verification_note='Personal lead - no company name'
             )
-            
+
     def _map_first_name(self, fields: Dict, raw_text: str) -> MappedField:
         """Extract first name from personal taxpayer"""
         business_personal = self._map_business_personal(fields, raw_text)
-        
+
         if business_personal.value == 'Personal':
             full_name = fields.get('taxpayer_name', '')
             parts = full_name.split()
@@ -331,18 +331,18 @@ class FieldMapper:
                     source='inferred',
                     verification_note='First word of taxpayer name'
                 )
-                
+
         return MappedField(
             value='',
             confidence=1.0,
             source='inferred',
             verification_note='Business lead - no first name'
         )
-        
+
     def _map_last_name(self, fields: Dict, raw_text: str) -> MappedField:
         """Extract last name from personal taxpayer"""
         business_personal = self._map_business_personal(fields, raw_text)
-        
+
         if business_personal.value == 'Personal':
             full_name = fields.get('taxpayer_name', '')
             parts = full_name.split()
@@ -353,18 +353,18 @@ class FieldMapper:
                     source='inferred',
                     verification_note='Last word of taxpayer name'
                 )
-                
+
         return MappedField(
             value='',
             confidence=1.0,
             source='inferred',
             verification_note='Business lead - no last name'
         )
-        
+
     def _map_street(self, fields: Dict, raw_text: str) -> MappedField:
         """Extract street address"""
         address = fields.get('address', '')
-        
+
         if address:
             return MappedField(
                 value=address,
@@ -372,7 +372,7 @@ class FieldMapper:
                 source='pdf_text',
                 verification_note='Address extracted from document'
             )
-            
+
         # Try to extract from raw text
         street_pattern = r'(\d+\s+[\w\s]+(?:Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Drive|Dr|Lane|Ln|Way|Court|Ct|Plaza|Plz|Suite|Ste|Floor|Fl))'
         match = re.search(street_pattern, raw_text, re.IGNORECASE)
@@ -383,14 +383,14 @@ class FieldMapper:
                 source='inferred',
                 verification_note='Address pattern matched in document'
             )
-            
+
         return MappedField(
             value=None,
             confidence=0.0,
             source='manual',
             verification_note='Address not found - manual review required'
         )
-        
+
     def _map_city(self, fields: Dict, raw_text: str) -> MappedField:
         """Extract city"""
         # Try to extract from City, State ZIP pattern
@@ -404,14 +404,14 @@ class FieldMapper:
                     source='pdf_text',
                     verification_note='City from address block'
                 )
-                
+
         return MappedField(
             value=None,
             confidence=0.0,
             source='manual',
             verification_note='City not found - manual review required'
         )
-        
+
     def _map_state(self, fields: Dict, raw_text: str) -> MappedField:
         """Extract state"""
         city_state_zip = fields.get('city_state_zip')
@@ -425,14 +425,14 @@ class FieldMapper:
                     source='pdf_text',
                     verification_note='State from address block'
                 )
-                
+
         return MappedField(
             value=None,
             confidence=0.0,
             source='manual',
             verification_note='State not found - manual review required'
         )
-        
+
     def _map_zip_code(self, fields: Dict, raw_text: str) -> MappedField:
         """Extract ZIP code"""
         city_state_zip = fields.get('city_state_zip')
@@ -445,7 +445,7 @@ class FieldMapper:
                     source='pdf_text',
                     verification_note='ZIP from address block'
                 )
-                
+
         # Try to find any ZIP in raw text
         zip_pattern = r'\b(\d{5}(?:-\d{4})?)\b'
         match = re.search(zip_pattern, raw_text)
@@ -456,7 +456,7 @@ class FieldMapper:
                 source='inferred',
                 verification_note='ZIP found in document'
             )
-            
+
         return MappedField(
             value=None,
             confidence=0.0,
