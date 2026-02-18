@@ -344,10 +344,78 @@ class NYCACRISAutomation:
             await self.browser.close()
             
 
+from src.scrapers.ca_sos import scrape_ca_sos_liens
+
 async def scrape_nyc_acris() -> List[LienRecord]:
     """Entry point for NYC ACRIS scraping"""
     scraper = NYCACRISAutomation()
     return await scraper.scrape_all_records()
+
+async def scrape_ca_sos(
+    date_start: datetime.date,
+    date_end: datetime.date,
+    max_records: int = 1000,
+    cursor: Optional[Dict[str, int]] = None
+) -> List[LienRecord]:
+    """
+    Entry point for CA SOS UCC Federal Tax Lien scraping.
+
+    This helper creates a Playwright context, delegates scraping to
+    `scrape_ca_sos_liens`, and converts returned dictionaries into
+    `LienRecord` objects.
+    """
+    logger.info(
+        "Starting CA SOS scraping from %s to %s (max %d records)",
+        date_start, date_end, max_records
+    )
+    playwright = await async_playwright().start()
+    browser = await playwright.chromium.launch(
+        headless=True,
+        args=['--no-sandbox', '--disable-dev-shm-usage']
+    )
+    context = await browser.new_context(
+        viewport={'width': 1920, 'height': 1080},
+        user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+    )
+    page = await context.new_page()
+    page.set_default_timeout(60000)
+    try:
+        records, _ = await scrape_ca_sos_liens(
+            page=page,
+            date_start=date_start,
+            date_end=date_end,
+            max_records=max_records,
+            cursor=cursor,
+            output_dir="./downloads"
+        )
+        lien_records: List[LienRecord] = []
+        for rec in records:
+            lien_records.append(
+                LienRecord(
+                    site_id=rec.get('site_id', '21'),
+                    lien_date=rec.get('filing_date'),
+                    amount=None,
+                    lead_type='Lien',
+                    lead_source='777',
+                    liability_type='IRS',
+                    business_personal='Unknown',
+                    company=None,
+                    first_name=None,
+                    last_name=None,
+                    street=None,
+                    city=None,
+                    state=None,
+                    zip_code=None,
+                    raw_text=(rec.get('raw_text') or '')[:5000],
+                    confidence_scores={},
+                    pdf_url=rec.get('pdf_url'),
+                    verification_flags=[]
+                )
+            )
+        return lien_records
+    finally:
+        await context.close()
+        await browser.close()
 
 
 if __name__ == "__main__":

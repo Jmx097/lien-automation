@@ -1,0 +1,207 @@
+INFO:test_ca_ucc:Starting CA UCC integration test...
+INFO:src.queue.store:TaskStore initialised (data/test_queue.db)
+INFO:src.queue.store:Added task a3996d4b (site=20)
+INFO:src.queue.api:Enqueued task a3996d4b  site=20  window=01/20/2026 → 01/25/2026  max=5
+INFO:test_ca_ucc:Enqueued task a3996d4b5d614939846aaa85dda78455
+INFO:src.queue.store:TaskStore initialised (data/test_queue.db)
+INFO:test_ca_ucc:Running task f4c2c269ba06483d819f5a7becfd273a (site=20)
+INFO:src.queue.worker:Running task f4c2c269 (site=20, attempt 1/1)
+DEBUG: _perform_search START: 01/20/2026 to 01/25/2026
+DEBUG: Navigated to URL
+DEBUG: Page loaded
+DEBUG: Filled search term
+DEBUG: Clicked Advanced
+DEBUG: File Type visible
+DEBUG: Selected File Type
+DEBUG: Filled Start Date
+DEBUG: Filled End Date
+DEBUG: Clicked Search
+DEBUG: Search results likely loaded
+INFO:src.scrapers.ca_ucc_scraper_playwright:Found 172 results. Starting collection...
+INFO:src.scrapers.ca_ucc_scraper_playwright:Processing page 1...
+DEBUG: Processing row 0
+DEBUG: Detail panel failed for U260005937931
+DEBUG: Processing row 1
+DEBUG: Row 1 has insufficient cells
+DEBUG: Processing row 2
+DEBUG: Row 2 has insufficient cells
+DEBUG: Processing row 3
+DEBUG: Row 3 has insufficient cells
+DEBUG: Processing row 4
+DEBUG: Row 4 has insufficient cells
+DEBUG: Processing row 5
+DEBUG: Row 5 has insufficient cells
+DEBUG: Processing row 6
+DEBUG: Row 6 has insufficient cells
+DEBUG: Processing row 7
+DEBUG: Row 7 has insufficient cells
+DEBUG: Processing row 8
+DEBUG: Row 8 has insufficient cells
+DEBUG: Processing row 9
+DEBUG: Row 9 has insufficient cells
+DEBUG: Processing row 10
+DEBUG: Row 10 has insufficient cells
+DEBUG: Processing row 11
+DEBUG: Row 11 has insufficient cells
+DEBUG: Processing row 12
+DEBUG: Row 12 has insufficient cells
+DEBUG: Processing row 13
+DEBUG: Row 13 has insufficient cells
+DEBUG: Processing row 14
+DEBUG: Row 14 has insufficient cells
+DEBUG: Processing row 15
+DEBUG: Row 15 has insufficient cells
+DEBUG: Processing row 16
+DEBUG: Row 16 has insufficient cells
+DEBUG: Processing row 17
+DEBUG: Row 17 has insufficient cells
+DEBUG: Processing row 18
+DEBUG: Row 18 has insufficient cells
+DEBUG: Processing row 19
+DEBUG: Row 19 has insufficient cells
+DEBUG: Processing row 20
+DEBUG: Row 20 has insufficient cells
+DEBUG: Processing row 21
+DEBUG: Row 21 has insufficient cells
+DEBUG: Processing row 22
+DEBUG: Row 22 has insufficient cells
+DEBUG: Processing row 23
+DEBUG: Row 23 has insufficient cells
+DEBUG: Processing row 24
+DEBUG: Row 24 has insufficient cells
+DEBUG: Processing row 25
+DEBUG: Row 25 has insufficient cells
+DEBUG: Processing row 26
+DEBUG: Row 26 has insufficient cells
+DEBUG: Processing row 27
+DEBUG: Row 27 has insufficient cells
+DEBUG: Processing row 28
+DEBUG: Row 28 has insufficient cells
+DEBUG: Processing row 29
+DEBUG: Row 29 has insufficient cells
+DEBUG: Processing row 30
+DEBUG: Row 30 has insufficient cells
+DEBUG: Processing row 31
+DEBUG: Row 31 has insufficient cells
+DEBUG: Processing row 32
+DEBUG: Row 32 has insufficient cells
+DEBUG: Processing row 33
+DEBUG: Row 33 has insufficient cells
+DEBUG: Processing row 34
+DEBUG: Row 34 has insufficient cells
+DEBUG: Processing row 35
+DEBUG: Row 35 has insufficient cells
+DEBUG: Processing row 36
+DEBUG: Row 36 has insufficient cells
+DEBUG: Processing row 37
+DEBUG: Row 37 has insufficient cells
+DEBUG: Processing row 38
+DEBUG: Row 38 has insufficient cells
+DEBUG: Processing row 39
+DEBUG: Row 39 has insufficient cells
+DEBUG: Processing row 40
+DEBUG: Row 40 has insufficient cells
+DEBUG: Processing row 41
+DEBUG: Row 41 has insufficient cells
+DEBUG: Processing row 42
+DEBUG: Row 42 has insufficient cells
+DEBUG: Processing row 43
+DEBUG: Row 43 has insufficient cells
+DEBUG: Processing row 44
+DEBUG: Row 44 has insufficient cells
+DEBUG: Processing row 45
+DEBUG: Row 45 has insufficient cells
+DEBUG: Processing row 46
+DEBUG: Row 46 has insufficient cells
+DEBUG: Processing row 47
+DEBUG: Row 47 has insufficient cells
+DEBUG: Processing row 48
+DEBUG: Row 48 has insufficient cells
+DEBUG: Processing row 49
+DEBUG: Row 49 has insufficient cells
+DEBUG: Processing row 50
+DEBUG: Row 50 has insufficient cells
+DEBUG: Processing row 51
+DEBUG: Row 51 has insufficient cells
+DEBUG: Processing row 52
+DEBUG: Row 52 has insufficient cells
+DEBUG: Processing row 53
+DEBUG: Row 53 has insufficient cells
+DEBUG: Processing row 54
+DEBUG: Row 54 has insufficient cells
+DEBUG: Processing row 55
+DEBUG: Row 55 has insufficient cells
+DEBUG: Processing row 56
+DEBUG: Row 56 has insufficient cells
+DEBUG: Processing row 57
+DEBUG: Row 57 has insufficient cells
+DEBUG: Processing row 58
+DEBUG: Row 58 has insufficient cells
+DEBUG: Processing row 59
+DEBUG: Row 59 has insufficient cells
+DEBUG: Processing row 60
+DEBUG: Row 60 has insufficient cells
+DEBUG: Processing row 61
+DEBUG: Row 61 has insufficient cells
+DEBUG: Processing row 62
+DEBUG: Row 62 has insufficient cells
+DEBUG: Processing row 63
+DEBUG: Row 63 has insufficient cells
+DEBUG: Processing row 64
+DEBUG: Row 64 has insufficient cells
+DEBUG: Processing row 65
+DEBUG: Row 65 has insufficient cells
+DEBUG: Processing row 66
+DEBUG: Row 66 has insufficient cells
+DEBUG: Processing row 67
+DEBUG: Row 67 has insufficient cells
+DEBUG: Processing row 68
+DEBUG: Row 68 has insufficient cells
+DEBUG: Processing row 69
+DEBUG: Row 69 has insufficient cells
+DEBUG: Processing row 70
+DEBUG: Row 70 has insufficient cells
+DEBUG: Processing row 71
+DEBUG: Row 71 has insufficient cells
+DEBUG: Processing row 72
+DEBUG: Row 72 has insufficient cells
+DEBUG: Processing row 73
+DEBUG: Row 73 has insufficient cells
+DEBUG: Processing row 74
+DEBUG: Row 74 has insufficient cells
+DEBUG: Processing row 75
+DEBUG: Row 75 has insufficient cells
+DEBUG: Processing row 76
+DEBUG: Row 76 has insufficient cells
+DEBUG: Processing row 77
+DEBUG: Row 77 has insufficient cells
+DEBUG: Processing row 78
+DEBUG: Row 78 has insufficient cells
+DEBUG: Processing row 79
+DEBUG: Row 79 has insufficient cells
+DEBUG: Processing row 80
+DEBUG: Row 80 has insufficient cells
+DEBUG: Processing row 81
+DEBUG: Row 81 has insufficient cells
+DEBUG: Processing row 82
+DEBUG: Row 82 has insufficient cells
+DEBUG: Processing row 83
+DEBUG: Row 83 has insufficient cells
+DEBUG: Processing row 84
+DEBUG: Row 84 has insufficient cells
+DEBUG: Processing row 85
+DEBUG: Row 85 has insufficient cells
+DEBUG: Processing row 86
+DEBUG: Row 86 has insufficient cells
+DEBUG: Processing row 87
+DEBUG: Row 87 has insufficient cells
+DEBUG: Processing row 88
+DEBUG: Row 88 has insufficient cells
+DEBUG: Processing row 89
+DEBUG: Row 89 has insufficient cells
+DEBUG: Processing row 90
+DEBUG: Row 90 has insufficient cells
+INFO:src.queue.worker:Task f4c2c269 completed (0 records written)
+INFO:test_ca_ucc:Task finished with status: pending
+ERROR:test_ca_ucc:Error: 
+INFO:root:Saving error to E:\Blank Canvas - Plinko Solutions\Antigravity\Prod Bench\TimberlineTax/final_error.txt

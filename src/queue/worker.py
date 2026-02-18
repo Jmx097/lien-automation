@@ -79,9 +79,25 @@ def _write_to_sheets(records: List[Any], site_id: str) -> int:
 
     mapper = FieldMapper(site_key)
     rows: List[list] = []
+    mapper = FieldMapper(site_key)
+    rows: List[list] = []
     for rec in records:
-        raw_text = json.dumps(rec) if isinstance(rec, dict) else str(rec)
-        mapped = mapper.map_record({}, raw_text)
+        # Convert dictionary or object to dict
+        rec_dict = rec if isinstance(rec, dict) else (rec.to_dict() if hasattr(rec, 'to_dict') else rec.__dict__)
+
+        # Map CA UCC fields to mapper expected keys
+        extracted_fields = {}
+        if site_id == "20":
+            extracted_fields = {
+                "taxpayer_name": rec_dict.get("debtor_name", ""),
+                "address": rec_dict.get("debtor_address", ""),
+                "city_state_zip": rec_dict.get("debtor_address", ""),  # Use full address for parsing
+                "lien_date": rec_dict.get("filing_date", ""),
+                "amount": "",  # CA UCC scraper currently doesn't provide amount
+            }
+
+        raw_text = json.dumps(rec_dict)
+        mapped = mapper.map_record(extracted_fields, raw_text)
         rows.append(mapped.to_row())
 
     sheets = GoogleSheetsIntegration(SHEET_ID)
@@ -142,9 +158,12 @@ def run_task(task: Task, store: TaskStore) -> None:
         logger.info("Task %s completed (%d records written)", task.id[:8], written)
 
     except Exception as exc:
-        logger.error("Task %s failed: %s", task.id[:8], exc)
-        task.last_error = str(exc)
-
+        import traceback
+        logger.error(
+            "Task %s failed: %s\n%s", task.id[:8], exc, traceback.format_exc()
+        )
+        task.last_error = f"{str(exc)}\n{traceback.format_exc()}"
+        
         if task.attempts >= MAX_ATTEMPTS:
             task.status = "failed"
             store.update_task(task)
