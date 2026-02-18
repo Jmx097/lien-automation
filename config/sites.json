@@ -1,1 +1,41 @@
-{"sites": [{"id": 20, "name": "CA SOS", "state": "CA", "county": "California SOS", "liability_type": "IRS", "base_url": "https://www.sos.ca.gov/business-programs/bizfile/search-online", "enabled": true}, {"id": 10, "name": "IL Cook County", "state": "IL", "county": "Cook County", "liability_type": "IRS", "base_url": "https://crs.cookcountyclerkil.gov/Search", "enabled": true}, {"id": 11, "name": "TX Dallas County", "state": "TX", "county": "Dallas County", "liability_type": "IRS", "base_url": "https://dallas.tx.publicsearch.us/", "enabled": true}, {"id": 21, "name": "CA SOS UCC - Federal Tax Liens", "state": "CA", "county": "Statewide", "liability_type": "IRS", "base_url": "https://bizfileonline.sos.ca.gov/search/ucc", "enabled": true}]}
+{
+  "sites": [
+    {
+      "id": 10,
+      "name": "IL Cook County",
+      "state": "IL",
+      "county": "Cook County",
+      "liability_type": "IRS",
+      "base_url": "https://crs.cookcountyclerkil.gov/Search",
+      "enabled": true
+    },
+    {
+      "id": 11,
+      "name": "TX Dallas County",
+      "state": "TX",
+      "county": "Dallas County",
+      "liability_type": "IRS",
+      "base_url": "https://dallas.tx.publicsearch.us/",
+      "enabled": true
+    },
+    {
+      "id": 12,
+      "name": "NYC ACRIS",
+      "state": "NY",
+      "county": "New York County",
+      "liability_type": "IRS",
+      "base_url": "https://a836-acris.nyc.gov/",
+      "enabled": true
+    },
+    {
+      "id": 20,
+      "name": "CA SOS",
+      "state": "CA",
+      "county": "California SOS",
+      "liability_type": "IRS",
+      "base_url": "https://bizfileonline.sos.ca.gov/search/ucc",
+      "enabled": true
+    }
+  ]
+}
+

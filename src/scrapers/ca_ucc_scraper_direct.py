@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
 """
 California SOS UCC Lien Scraper - Direct HTTP Version
-Tries simple HTTP requests without ScrapingBee API
+Tries simple HTTP requests without headless browser
 """
 
 import asyncio
-import os
 from datetime import datetime, timedelta
 from typing import List, Dict, Optional
 from dataclasses import dataclass
-import json
 import aiohttp
 
 
@@ -50,11 +48,14 @@ class LienRecord:
 
 
 class CAUCCScraper:
+    """
+    Direct HTTP scraper for CA UCC (fallback method)
+    Note: Most sites require JavaScript, so this is limited
+    """
+    
     BASE_URL = "https://bizfileonline.sos.ca.gov/search/ucc"
     
-    def __init__(self, api_key: str = None):
-        # Try to use API key if available, but don't fail if ScrapingBee is exhausted
-        self.api_key = api_key or os.getenv("SCRAPINGBEE_API_KEY", "")
+    def __init__(self):
         self.session = None
         
     async def __aenter__(self):
@@ -75,7 +76,10 @@ class CAUCCScraper:
             await self.session.close()
         
     async def scrape_debug(self, from_date: str = None, to_date: str = None, max_results: int = 50) -> tuple:
-        """Scrape with debug info - tries multiple approaches"""
+        """
+        Scrape with debug info - direct HTTP attempt
+        Note: CA SOS requires JavaScript, so this will likely return limited results
+        """
         if not from_date or not to_date:
             today = datetime.now()
             month_ago = today - timedelta(days=30)
@@ -84,77 +88,40 @@ class CAUCCScraper:
         
         debug_info = []
         debug_info.append(f"Date Range: {from_date} to {to_date}")
+        debug_info.append("WARNING: Direct HTTP mode - site requires JavaScript")
+        debug_info.append("Use ca_ucc_scraper_playwright.py for full functionality")
         
-        # Try 1: Direct HTTP request with browser headers
+        # Try direct HTTP request with browser headers
         try:
-            debug_info.append("Attempt 1: Direct HTTP request")
+            debug_info.append("Attempting direct HTTP request...")
             async with self.session.get(self.BASE_URL, timeout=30) as response:
                 html = await response.text()
-                debug_info.append(f"Direct HTTP status: {response.status}")
-                debug_info.append(f"Direct HTTP length: {len(html)} bytes")
+                debug_info.append(f"HTTP status: {response.status}")
+                debug_info.append(f"Response length: {len(html)} bytes")
                 
-                # Always parse to see what we got
+                # Parse to see what we got
                 from bs4 import BeautifulSoup
                 soup = BeautifulSoup(html, 'html.parser')
                 title = soup.find('title')
                 if title:
-                    debug_info.append(f"Direct HTTP title: {title.get_text()}")
+                    debug_info.append(f"Page title: {title.get_text()}")
                 
-                # Show first 500 chars of HTML
-                debug_info.append(f"Direct HTML content: {html[:500]}...")
-                
-                # Look for redirect or error indicators
-                if 'redirect' in html.lower() or 'location' in html.lower():
-                    debug_info.append("WARNING: Possible redirect detected")
+                # Check for JavaScript requirements
+                if 'enable javascript' in html.lower() or 'javascript required' in html.lower():
+                    debug_info.append("CONFIRMED: Site requires JavaScript execution")
                 
                 # Look for forms
                 forms = soup.find_all('form')
                 debug_info.append(f"Forms found: {len(forms)}")
                 
-                # Look for iframes
+                # Look for iframes (common in JS-heavy sites)
                 iframes = soup.find_all('iframe')
                 debug_info.append(f"Iframes found: {len(iframes)}")
-                for i, iframe in enumerate(iframes[:2]):
-                    debug_info.append(f"  Iframe {i} src: {iframe.get('src', 'N/A')[:100]}")
+                
         except Exception as e:
             debug_info.append(f"Direct HTTP failed: {str(e)}")
         
-        # Try 2: ScrapingBee if API key available
-        if self.api_key:
-            try:
-                debug_info.append("Attempt 2: ScrapingBee API")
-                scrapingbee_url = (
-                    f"https://app.scrapingbee.com/api/v1/?"
-                    f"api_key={self.api_key}&"
-                    f"url={self.BASE_URL}&"
-                    f"render_js=true&"
-                    f"wait=5000&"
-                    f"stealth_proxy=true"
-                )
-                
-                async with self.session.get(scrapingbee_url, timeout=60) as response:
-                    html = await response.text()
-                    debug_info.append(f"ScrapingBee response length: {len(html)} bytes")
-                    
-                    if len(html) < 100:
-                        debug_info.append(f"ScrapingBee error: {html[:200]}")
-                    else:
-                        from bs4 import BeautifulSoup
-                        soup = BeautifulSoup(html, 'html.parser')
-                        title = soup.find('title')
-                        if title:
-                            debug_info.append(f"ScrapingBee title: {title.get_text()}")
-                        
-                        tables = soup.find_all('table')
-                        debug_info.append(f"Tables found: {len(tables)}")
-                        
-                        return [], debug_info
-            except Exception as e:
-                debug_info.append(f"ScrapingBee failed: {str(e)}")
-        else:
-            debug_info.append("No ScrapingBee API key configured")
-        
-        debug_info.append("All attempts failed")
+        debug_info.append("Direct HTTP mode complete - use Playwright for full extraction")
         return [], debug_info
     
     async def scrape(self, from_date: str = None, to_date: str = None, max_results: int = 50) -> List[LienRecord]:
