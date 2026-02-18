@@ -1,0 +1,1157 @@
+﻿************* Module src.accuracy_verifier
+src\accuracy_verifier.py:40:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:45:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:55:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:60:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:63:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:67:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:71:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:88:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:92:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:95:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:98:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:101:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:108:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:118:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:121:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:123:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:124:65: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:125:57: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:130:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:133:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:136:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:145:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:150:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:152:58: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:154:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:158:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:160:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:165:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:169:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:182:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:184:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:189:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:193:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:195:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:200:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:204:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:206:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:211:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:215:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:217:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:222:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:226:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:230:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:232:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:237:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:240:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:242:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:247:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:253:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:257:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:259:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:264:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:273:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:275:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:280:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:287:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:289:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:294:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:301:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:303:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:308:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:315:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:323:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:327:0: C0303: Trailing whitespace (trailing-whitespace)
+src\accuracy_verifier.py:66:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\accuracy_verifier.py:119:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\accuracy_verifier.py:124:4: R0913: Too many arguments (6/5) (too-many-arguments)
+src\accuracy_verifier.py:124:4: R0917: Too many positional arguments (6/5) (too-many-positional-arguments)
+src\accuracy_verifier.py:225:31: W1309: Using an f-string that does not have any interpolated variables (f-string-without-interpolation)
+src\accuracy_verifier.py:38:0: R0903: Too few public methods (1/2) (too-few-public-methods)
+src\accuracy_verifier.py:8:0: W0611: Unused Dict imported from typing (unused-import)
+************* Module src.ai_classifier
+src\ai_classifier.py:14:0: C0303: Trailing whitespace (trailing-whitespace)
+src\ai_classifier.py:21:0: C0303: Trailing whitespace (trailing-whitespace)
+src\ai_classifier.py:25:0: C0303: Trailing whitespace (trailing-whitespace)
+src\ai_classifier.py:30:0: C0303: Trailing whitespace (trailing-whitespace)
+src\ai_classifier.py:32:0: C0303: Trailing whitespace (trailing-whitespace)
+src\ai_classifier.py:37:0: C0303: Trailing whitespace (trailing-whitespace)
+src\ai_classifier.py:40:0: C0303: Trailing whitespace (trailing-whitespace)
+src\ai_classifier.py:45:0: C0303: Trailing whitespace (trailing-whitespace)
+src\ai_classifier.py:49:0: C0303: Trailing whitespace (trailing-whitespace)
+src\ai_classifier.py:54:0: C0303: Trailing whitespace (trailing-whitespace)
+src\ai_classifier.py:56:0: C0303: Trailing whitespace (trailing-whitespace)
+src\ai_classifier.py:57:71: C0303: Trailing whitespace (trailing-whitespace)
+src\ai_classifier.py:62:0: C0303: Trailing whitespace (trailing-whitespace)
+src\ai_classifier.py:64:0: C0303: Trailing whitespace (trailing-whitespace)
+src\ai_classifier.py:70:0: C0303: Trailing whitespace (trailing-whitespace)
+src\ai_classifier.py:75:0: C0303: Trailing whitespace (trailing-whitespace)
+src\ai_classifier.py:6:0: W0611: Unused Dict imported from typing (unused-import)
+************* Module src.browser_automation
+src\browser_automation.py:50:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:53:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:59:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:64:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:69:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:74:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:78:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:82:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:86:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:95:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:104:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:108:32: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:113:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:115:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:121:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:125:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:132:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:136:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:140:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:143:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:145:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:153:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:161:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:163:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:168:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:172:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:180:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:184:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:189:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:192:0: C0301: Line too long (102/100) (line-too-long)
+src\browser_automation.py:199:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:204:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:206:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:211:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:215:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:219:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:223:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:225:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:228:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:232:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:238:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:243:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:246:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:251:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:253:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:258:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:262:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:268:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:274:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:277:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:299:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:301:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:305:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:310:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:312:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:316:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:327:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:330:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:334:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:337:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:345:0: C0303: Trailing whitespace (trailing-whitespace)
+src\browser_automation.py:15:0: E0401: Unable to import 'playwright.async_api' (import-error)
+src\browser_automation.py:26:0: R0902: Too many instance attributes (18/7) (too-many-instance-attributes)
+src\browser_automation.py:117:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\browser_automation.py:144:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\browser_automation.py:165:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\browser_automation.py:193:16: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
+src\browser_automation.py:203:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\browser_automation.py:208:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\browser_automation.py:214:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\browser_automation.py:254:15: W0718: Catching too general exception Exception (broad-exception-caught)
+src\browser_automation.py:221:16: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\browser_automation.py:230:16: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\browser_automation.py:255:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\browser_automation.py:324:23: W0718: Catching too general exception Exception (broad-exception-caught)
+src\browser_automation.py:323:24: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\browser_automation.py:325:20: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\browser_automation.py:328:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\browser_automation.py:332:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\browser_automation.py:7:0: W0611: Unused import json (unused-import)
+src\browser_automation.py:9:0: W0611: Unused import re (unused-import)
+src\browser_automation.py:11:0: W0611: Unused Tuple imported from typing (unused-import)
+src\browser_automation.py:13:0: W0611: Unused Path imported from pathlib (unused-import)
+************* Module src.capture_one_site
+src\capture_one_site.py:26:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_one_site.py:31:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_one_site.py:58:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_one_site.py:61:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_one_site.py:69:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_one_site.py:23:0: C0116: Missing function or method docstring (missing-function-docstring)
+src\capture_one_site.py:7:0: W0611: Unused import json (unused-import)
+src\capture_one_site.py:9:0: W0611: Unused Path imported from pathlib (unused-import)
+************* Module src.capture_selectors
+src\capture_selectors.py:22:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_selectors.py:30:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_selectors.py:38:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_selectors.py:42:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_selectors.py:46:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_selectors.py:51:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_selectors.py:53:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_selectors.py:58:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_selectors.py:76:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_selectors.py:83:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_selectors.py:102:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_selectors.py:104:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_selectors.py:110:0: C0301: Line too long (102/100) (line-too-long)
+src\capture_selectors.py:112:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_selectors.py:126:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_selectors.py:128:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_selectors.py:132:0: C0301: Line too long (103/100) (line-too-long)
+src\capture_selectors.py:134:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_selectors.py:138:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_selectors.py:145:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_selectors.py:148:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_selectors.py:171:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_selectors.py:177:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_selectors.py:179:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_selectors.py:182:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_selectors.py:184:0: C0303: Trailing whitespace (trailing-whitespace)
+src\capture_selectors.py:18:0: C0115: Missing class docstring (missing-class-docstring)
+src\capture_selectors.py:54:19: W0718: Catching too general exception Exception (broad-exception-caught)
+src\capture_selectors.py:59:35: W0613: Unused argument 'page' (unused-argument)
+src\capture_selectors.py:84:37: W0613: Unused argument 'page' (unused-argument)
+src\capture_selectors.py:113:37: W0613: Unused argument 'page' (unused-argument)
+src\capture_selectors.py:141:17: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+src\capture_selectors.py:146:13: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+src\capture_selectors.py:12:4: W0611: Unused Browser imported from playwright.sync_api (unused-import)
+************* Module src.config
+src\config.py:24:0: C0303: Trailing whitespace (trailing-whitespace)
+src\config.py:34:0: C0303: Trailing whitespace (trailing-whitespace)
+src\config.py:43:0: C0303: Trailing whitespace (trailing-whitespace)
+src\config.py:55:0: C0303: Trailing whitespace (trailing-whitespace)
+src\config.py:27:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\config.py:28:17: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+************* Module src.dashboard
+src\dashboard.py:62:0: C0301: Line too long (105/100) (line-too-long)
+src\dashboard.py:79:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dashboard.py:89:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dashboard.py:93:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dashboard.py:97:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dashboard.py:99:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dashboard.py:121:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dashboard.py:125:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dashboard.py:410:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dashboard.py:8:0: E0401: Unable to import 'flask' (import-error)
+src\dashboard.py:34:11: W0718: Catching too general exception Exception (broad-exception-caught)
+src\dashboard.py:31:13: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+src\dashboard.py:47:11: W0718: Catching too general exception Exception (broad-exception-caught)
+src\dashboard.py:41:13: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+src\dashboard.py:64:11: W0718: Catching too general exception Exception (broad-exception-caught)
+src\dashboard.py:58:21: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+src\dashboard.py:87:4: W0702: No exception type(s) specified (bare-except)
+src\dashboard.py:82:13: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+src\dashboard.py:9:0: C0411: standard import "json" should be placed before third party import "flask.Flask" (wrong-import-order)
+src\dashboard.py:10:0: C0411: standard import "os" should be placed before third party import "flask.Flask" (wrong-import-order)
+src\dashboard.py:11:0: C0411: standard import "pathlib.Path" should be placed before third party import "flask.Flask" (wrong-import-order)
+src\dashboard.py:12:0: C0411: standard import "datetime.datetime" should be placed before third party import "flask.Flask" (wrong-import-order)
+src\dashboard.py:8:0: W0611: Unused request imported from flask (unused-import)
+src\dashboard.py:10:0: W0611: Unused import os (unused-import)
+************* Module src.dedupe_utility
+src\dedupe_utility.py:27:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:31:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:32:52: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:39:0: C0301: Line too long (105/100) (line-too-long)
+src\dedupe_utility.py:46:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:50:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:53:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:56:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:65:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:67:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:74:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:76:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:88:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:91:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:95:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:98:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:101:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:104:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:108:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:113:0: C0301: Line too long (120/100) (line-too-long)
+src\dedupe_utility.py:115:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:117:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:123:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:125:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:131:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:135:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:137:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:141:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:145:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:151:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:153:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:161:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:165:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:168:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:170:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:179:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:191:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:194:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:199:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:209:0: C0303: Trailing whitespace (trailing-whitespace)
+src\dedupe_utility.py:28:23: W0621: Redefining name 'sheet_id' from outer scope (line 193) (redefined-outer-name)
+src\dedupe_utility.py:51:8: W0612: Unused variable 'header' (unused-variable)
+src\dedupe_utility.py:77:4: R0914: Too many local variables (16/15) (too-many-locals)
+src\dedupe_utility.py:87:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\dedupe_utility.py:100:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\dedupe_utility.py:113:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\dedupe_utility.py:126:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\dedupe_utility.py:126:20: W1309: Using an f-string that does not have any interpolated variables (f-string-without-interpolation)
+src\dedupe_utility.py:127:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\dedupe_utility.py:128:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\dedupe_utility.py:129:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\dedupe_utility.py:130:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\dedupe_utility.py:147:12: W0212: Access to a protected member _log_audit of a client class (protected-access)
+src\dedupe_utility.py:152:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\dedupe_utility.py:96:8: W0612: Unused variable 'header' (unused-variable)
+src\dedupe_utility.py:171:8: W0621: Redefining name 'preview' from outer scope (line 198) (redefined-outer-name)
+src\dedupe_utility.py:183:15: W0621: Redefining name 'sheet_id' from outer scope (line 193) (redefined-outer-name)
+src\dedupe_utility.py:185:4: W0621: Redefining name 'deduper' from outer scope (line 197) (redefined-outer-name)
+src\dedupe_utility.py:214:14: W1309: Using an f-string that does not have any interpolated variables (f-string-without-interpolation)
+src\dedupe_utility.py:7:0: W0611: Unused Tuple imported from typing (unused-import)
+************* Module src.field_mapper
+src\field_mapper.py:40:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:59:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:81:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:88:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:95:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:100:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:104:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:122:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:124:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:128:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:153:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:160:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:166:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:174:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:185:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:188:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:190:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:194:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:209:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:223:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:230:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:239:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:248:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:257:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:261:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:267:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:269:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:278:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:288:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:295:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:299:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:315:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:319:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:330:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:337:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:341:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:352:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:359:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:363:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:371:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:373:0: C0301: Line too long (149/100) (line-too-long)
+src\field_mapper.py:382:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:389:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:403:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:410:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:424:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:431:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:444:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:455:0: C0303: Trailing whitespace (trailing-whitespace)
+src\field_mapper.py:24:0: R0902: Too many instance attributes (14/7) (too-many-instance-attributes)
+src\field_mapper.py:103:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\field_mapper.py:129:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
+src\field_mapper.py:186:15: W0718: Catching too general exception Exception (broad-exception-caught)
+src\field_mapper.py:187:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\field_mapper.py:258:51: W0613: Unused argument 'raw_text' (unused-argument)
+src\field_mapper.py:300:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
+src\field_mapper.py:390:38: W0613: Unused argument 'raw_text' (unused-argument)
+src\field_mapper.py:411:39: W0613: Unused argument 'raw_text' (unused-argument)
+src\field_mapper.py:79:0: R0903: Too few public methods (1/2) (too-few-public-methods)
+src\field_mapper.py:8:0: W0611: Unused Tuple imported from typing (unused-import)
+************* Module src.pdf_extractor
+src\pdf_extractor.py:13:0: E0401: Unable to import 'fitz' (import-error)
+src\pdf_extractor.py:15:0: E0401: Unable to import 'pytesseract' (import-error)
+src\pdf_extractor.py:53:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\pdf_extractor.py:61:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\pdf_extractor.py:65:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\pdf_extractor.py:70:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\pdf_extractor.py:78:12: C0200: Consider using enumerate instead of iterating with range and len (consider-using-enumerate)
+src\pdf_extractor.py:86:20: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\pdf_extractor.py:91:20: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\pdf_extractor.py:127:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\pdf_extractor.py:133:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\pdf_extractor.py:152:15: W0718: Catching too general exception Exception (broad-exception-caught)
+src\pdf_extractor.py:149:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\pdf_extractor.py:153:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\pdf_extractor.py:166:15: W0718: Catching too general exception Exception (broad-exception-caught)
+src\pdf_extractor.py:167:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\pdf_extractor.py:178:19: W0718: Catching too general exception Exception (broad-exception-caught)
+src\pdf_extractor.py:179:16: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\pdf_extractor.py:457:4: R0913: Too many arguments (7/5) (too-many-arguments)
+src\pdf_extractor.py:457:4: R0917: Too many positional arguments (7/5) (too-many-positional-arguments)
+src\pdf_extractor.py:506:0: R0913: Too many arguments (7/5) (too-many-arguments)
+************* Module src.selector_capture_gui
+src\selector_capture_gui.py:28:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:50:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:53:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:55:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:61:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:62:68: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:65:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:66:69: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:69:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:73:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:75:68: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:78:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:81:67: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:86:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:88:72: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:91:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:97:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:101:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:103:70: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:106:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:113:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:114:59: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:117:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:119:72: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:122:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:125:65: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:127:53: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:129:49: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:131:47: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:134:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:138:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:139:62: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:142:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:148:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:150:91: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:153:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:156:51: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:158:37: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:160:43: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:162:47: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:164:53: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:167:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:171:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:172:62: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:175:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:181:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:183:91: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:186:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:189:55: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:191:53: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:193:54: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:196:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:200:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:201:62: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:204:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:210:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:214:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:220:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:226:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:232:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:235:66: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:239:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:242:76: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:250:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:260:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:266:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:268:60: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:271:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:273:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:280:0: C0301: Line too long (118/100) (line-too-long)
+src\selector_capture_gui.py:285:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:290:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:292:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:300:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:306:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:309:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:317:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:319:65: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:320:56: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:326:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:333:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:342:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:346:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:348:38: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:352:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:362:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:367:48: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:370:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:374:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:376:58: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:379:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:381:46: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:384:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:387:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:393:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:398:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:403:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:406:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:414:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:422:0: C0303: Trailing whitespace (trailing-whitespace)
+src\selector_capture_gui.py:22:0: C0115: Missing class docstring (missing-class-docstring)
+src\selector_capture_gui.py:22:0: R0902: Too many instance attributes (14/7) (too-many-instance-attributes)
+src\selector_capture_gui.py:56:4: C0116: Missing function or method docstring (missing-function-docstring)
+src\selector_capture_gui.py:56:4: R0914: Too many local variables (27/15) (too-many-locals)
+src\selector_capture_gui.py:71:8: W0621: Redefining name 'main' from outer scope (line 411) (redefined-outer-name)
+src\selector_capture_gui.py:56:4: R0915: Too many statements (76/50) (too-many-statements)
+src\selector_capture_gui.py:240:29: W0613: Unused argument 'event' (unused-argument)
+src\selector_capture_gui.py:283:19: W0718: Catching too general exception Exception (broad-exception-caught)
+src\selector_capture_gui.py:315:23: R1714: Consider merging these comparisons with 'in' by using 'field not in ('next_page_button', 'recorder_stamp')'. Use a set instead if elements are hashable. (consider-using-in)
+src\selector_capture_gui.py:320:16: W1309: Using an f-string that does not have any interpolated variables (f-string-without-interpolation)
+src\selector_capture_gui.py:331:17: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+src\selector_capture_gui.py:344:13: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+src\selector_capture_gui.py:407:15: W0718: Catching too general exception Exception (broad-exception-caught)
+src\selector_capture_gui.py:372:17: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+src\selector_capture_gui.py:411:0: C0116: Missing function or method docstring (missing-function-docstring)
+src\selector_capture_gui.py:413:4: W0612: Unused variable 'app' (unused-variable)
+src\selector_capture_gui.py:8:0: W0611: Unused ttk imported from tkinter (unused-import)
+src\selector_capture_gui.py:8:0: W0611: Unused scrolledtext imported from tkinter (unused-import)
+src\selector_capture_gui.py:10:0: W0611: Unused import sys (unused-import)
+src\selector_capture_gui.py:11:0: W0611: Unused import subprocess (unused-import)
+************* Module src.sheets_integration
+src\sheets_integration.py:37:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:43:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:48:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:53:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:81:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:84:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:87:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:91:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:100:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:105:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:108:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:111:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:116:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:118:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:123:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:128:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:131:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:133:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:139:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:141:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:146:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:150:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:157:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:166:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:170:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:173:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:180:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:199:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:205:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:207:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:219:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:223:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:226:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:231:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:234:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:237:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:240:0: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:246:60: C0303: Trailing whitespace (trailing-whitespace)
+src\sheets_integration.py:12:0: E0401: Unable to import 'gspread' (import-error)
+src\sheets_integration.py:45:8: C0103: Attribute name "LIENS_TAB" doesn't conform to snake_case naming style (invalid-name)
+src\sheets_integration.py:46:8: C0103: Attribute name "ERRORS_TAB" doesn't conform to snake_case naming style (invalid-name)
+src\sheets_integration.py:47:8: C0103: Attribute name "AUDIT_TAB" doesn't conform to snake_case naming style (invalid-name)
+src\sheets_integration.py:58:21: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+src\sheets_integration.py:80:28: E1101: Class 'Credentials' has no 'get_default' member (no-member)
+src\sheets_integration.py:89:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\sheets_integration.py:97:15: W0718: Catching too general exception Exception (broad-exception-caught)
+src\sheets_integration.py:98:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\sheets_integration.py:190:15: W0718: Catching too general exception Exception (broad-exception-caught)
+src\sheets_integration.py:154:20: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\sheets_integration.py:168:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\sheets_integration.py:224:15: W0718: Catching too general exception Exception (broad-exception-caught)
+src\sheets_integration.py:222:16: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\sheets_integration.py:225:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\sheets_integration.py:238:15: W0718: Catching too general exception Exception (broad-exception-caught)
+src\sheets_integration.py:232:12: C0415: Import outside toplevel (datetime.datetime) (import-outside-toplevel)
+src\sheets_integration.py:239:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src\sheets_integration.py:14:0: W0611: Unused build imported from googleapiclient.discovery (unused-import)
+************* Module src.utils
+src\utils.py:5:0: W0611: Unused import os (unused-import)
+src\utils.py:8:0: W0611: Unused import json (unused-import)
+************* Module src.scrapers.ca_ucc_scraper
+src\scrapers\ca_ucc_scraper.py:34:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:56:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:61:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:65:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:68:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:71:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:77:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:104:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:106:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:110:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:118:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:121:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:130:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:138:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:141:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:145:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:149:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:154:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:160:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:167:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:168:0: C0301: Line too long (114/100) (line-too-long)
+src\scrapers\ca_ucc_scraper.py:169:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:172:0: C0301: Line too long (102/100) (line-too-long)
+src\scrapers\ca_ucc_scraper.py:173:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:176:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:191:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:198:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:201:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:205:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:207:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:214:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:217:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:222:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:225:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:229:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:237:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:239:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:245:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:249:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:250:0: C0301: Line too long (114/100) (line-too-long)
+src\scrapers\ca_ucc_scraper.py:258:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:264:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:268:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:271:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:275:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:278:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:281:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper.py:15:0: E0401: Unable to import 'aiohttp' (import-error)
+src\scrapers\ca_ucc_scraper.py:19:0: C0115: Missing class docstring (missing-class-docstring)
+src\scrapers\ca_ucc_scraper.py:19:0: R0902: Too many instance attributes (14/7) (too-many-instance-attributes)
+src\scrapers\ca_ucc_scraper.py:35:4: C0116: Missing function or method docstring (missing-function-docstring)
+src\scrapers\ca_ucc_scraper.py:54:0: C0115: Missing class docstring (missing-class-docstring)
+src\scrapers\ca_ucc_scraper.py:119:14: W1309: Using an f-string that does not have any interpolated variables (f-string-without-interpolation)
+src\scrapers\ca_ucc_scraper.py:131:4: R0914: Too many local variables (22/15) (too-many-locals)
+src\scrapers\ca_ucc_scraper.py:134:12: C0415: Import outside toplevel (bs4.BeautifulSoup) (import-outside-toplevel)
+src\scrapers\ca_ucc_scraper.py:202:23: W0718: Catching too general exception Exception (broad-exception-caught)
+src\scrapers\ca_ucc_scraper.py:218:12: W0612: Unused variable 'i' (unused-variable)
+src\scrapers\ca_ucc_scraper.py:260:14: W1309: Using an f-string that does not have any interpolated variables (f-string-without-interpolation)
+src\scrapers\ca_ucc_scraper.py:282:15: W0718: Catching too general exception Exception (broad-exception-caught)
+src\scrapers\ca_ucc_scraper.py:284:12: C0415: Import outside toplevel (traceback) (import-outside-toplevel)
+src\scrapers\ca_ucc_scraper.py:63:8: W0201: Attribute 'session' defined outside __init__ (attribute-defined-outside-init)
+src\scrapers\ca_ucc_scraper.py:7:0: W0611: Unused import asyncio (unused-import)
+src\scrapers\ca_ucc_scraper.py:11:0: W0611: Unused import base64 (unused-import)
+src\scrapers\ca_ucc_scraper.py:13:0: W0611: Unused Optional imported from typing (unused-import)
+************* Module src.scrapers.ca_ucc_scraper_direct
+src\scrapers\ca_ucc_scraper_direct.py:32:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_direct.py:54:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_direct.py:59:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_direct.py:63:0: C0301: Line too long (140/100) (line-too-long)
+src\scrapers\ca_ucc_scraper_direct.py:72:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_direct.py:76:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_direct.py:77:0: C0301: Line too long (109/100) (line-too-long)
+src\scrapers\ca_ucc_scraper_direct.py:84:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_direct.py:87:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_direct.py:95:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_direct.py:102:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_direct.py:105:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_direct.py:109:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_direct.py:113:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_direct.py:121:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_direct.py:134:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_direct.py:138:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_direct.py:147:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_direct.py:150:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_direct.py:156:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_direct.py:159:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_direct.py:160:0: C0301: Line too long (114/100) (line-too-long)
+src\scrapers\ca_ucc_scraper_direct.py:13:0: E0401: Unable to import 'aiohttp' (import-error)
+src\scrapers\ca_ucc_scraper_direct.py:17:0: C0115: Missing class docstring (missing-class-docstring)
+src\scrapers\ca_ucc_scraper_direct.py:17:0: R0902: Too many instance attributes (14/7) (too-many-instance-attributes)
+src\scrapers\ca_ucc_scraper_direct.py:33:4: C0116: Missing function or method docstring (missing-function-docstring)
+src\scrapers\ca_ucc_scraper_direct.py:52:0: C0115: Missing class docstring (missing-class-docstring)
+src\scrapers\ca_ucc_scraper_direct.py:77:4: R0914: Too many local variables (19/15) (too-many-locals)
+src\scrapers\ca_ucc_scraper_direct.py:119:15: W0718: Catching too general exception Exception (broad-exception-caught)
+src\scrapers\ca_ucc_scraper_direct.py:97:16: C0415: Import outside toplevel (bs4.BeautifulSoup) (import-outside-toplevel)
+src\scrapers\ca_ucc_scraper_direct.py:152:19: W0718: Catching too general exception Exception (broad-exception-caught)
+src\scrapers\ca_ucc_scraper_direct.py:142:24: C0415: Import outside toplevel (bs4.BeautifulSoup) (import-outside-toplevel)
+src\scrapers\ca_ucc_scraper_direct.py:77:4: R0915: Too many statements (51/50) (too-many-statements)
+src\scrapers\ca_ucc_scraper_direct.py:77:77: W0613: Unused argument 'max_results' (unused-argument)
+src\scrapers\ca_ucc_scraper_direct.py:7:0: W0611: Unused import asyncio (unused-import)
+src\scrapers\ca_ucc_scraper_direct.py:10:0: W0611: Unused Dict imported from typing (unused-import)
+src\scrapers\ca_ucc_scraper_direct.py:10:0: W0611: Unused Optional imported from typing (unused-import)
+src\scrapers\ca_ucc_scraper_direct.py:12:0: W0611: Unused import json (unused-import)
+************* Module src.scrapers.ca_ucc_scraper_playwright
+src\scrapers\ca_ucc_scraper_playwright.py:31:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:53:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:59:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:64:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:69:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:73:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:80:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:85:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:89:0: C0301: Line too long (137/100) (line-too-long)
+src\scrapers\ca_ucc_scraper_playwright.py:93:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:104:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:106:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:107:0: C0301: Line too long (138/100) (line-too-long)
+src\scrapers\ca_ucc_scraper_playwright.py:114:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:117:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:121:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:124:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:127:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:131:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:134:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:139:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:147:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:151:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:155:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:159:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:162:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:173:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:176:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:188:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:195:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:197:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:204:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:208:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:222:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:226:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:230:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:238:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:242:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:246:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:252:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:256:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:261:0: C0301: Line too long (114/100) (line-too-long)
+src\scrapers\ca_ucc_scraper_playwright.py:262:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:264:0: C0301: Line too long (122/100) (line-too-long)
+src\scrapers\ca_ucc_scraper_playwright.py:266:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:273:0: C0301: Line too long (102/100) (line-too-long)
+src\scrapers\ca_ucc_scraper_playwright.py:274:0: C0301: Line too long (108/100) (line-too-long)
+src\scrapers\ca_ucc_scraper_playwright.py:276:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:278:0: C0301: Line too long (102/100) (line-too-long)
+src\scrapers\ca_ucc_scraper_playwright.py:283:0: C0301: Line too long (105/100) (line-too-long)
+src\scrapers\ca_ucc_scraper_playwright.py:288:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:291:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:293:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:299:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_playwright.py:300:0: C0301: Line too long (114/100) (line-too-long)
+src\scrapers\ca_ucc_scraper_playwright.py:16:0: C0115: Missing class docstring (missing-class-docstring)
+src\scrapers\ca_ucc_scraper_playwright.py:16:0: R0902: Too many instance attributes (14/7) (too-many-instance-attributes)
+src\scrapers\ca_ucc_scraper_playwright.py:32:4: C0116: Missing function or method docstring (missing-function-docstring)
+src\scrapers\ca_ucc_scraper_playwright.py:51:0: C0115: Missing class docstring (missing-class-docstring)
+src\scrapers\ca_ucc_scraper_playwright.py:54:23: W0613: Unused argument 'api_key' (unused-argument)
+src\scrapers\ca_ucc_scraper_playwright.py:61:8: E0401: Unable to import 'playwright.async_api' (import-error)
+src\scrapers\ca_ucc_scraper_playwright.py:61:8: C0415: Import outside toplevel (playwright.async_api.async_playwright) (import-outside-toplevel)
+src\scrapers\ca_ucc_scraper_playwright.py:72:8: E0401: Unable to import 'playwright.async_api' (import-error)
+src\scrapers\ca_ucc_scraper_playwright.py:72:8: C0415: Import outside toplevel (playwright.async_api.async_playwright) (import-outside-toplevel)
+src\scrapers\ca_ucc_scraper_playwright.py:72:8: W0611: Unused async_playwright imported from playwright.async_api (unused-import)
+src\scrapers\ca_ucc_scraper_playwright.py:107:4: R0914: Too many local variables (41/15) (too-many-locals)
+src\scrapers\ca_ucc_scraper_playwright.py:294:15: W0718: Catching too general exception Exception (broad-exception-caught)
+src\scrapers\ca_ucc_scraper_playwright.py:145:19: W0718: Catching too general exception Exception (broad-exception-caught)
+src\scrapers\ca_ucc_scraper_playwright.py:289:19: W0718: Catching too general exception Exception (broad-exception-caught)
+src\scrapers\ca_ucc_scraper_playwright.py:170:27: W0718: Catching too general exception Exception (broad-exception-caught)
+src\scrapers\ca_ucc_scraper_playwright.py:219:31: W0718: Catching too general exception Exception (broad-exception-caught)
+src\scrapers\ca_ucc_scraper_playwright.py:236:31: W0718: Catching too general exception Exception (broad-exception-caught)
+src\scrapers\ca_ucc_scraper_playwright.py:118:8: R1702: Too many nested blocks (6/5) (too-many-nested-blocks)
+src\scrapers\ca_ucc_scraper_playwright.py:248:24: C0415: Import outside toplevel (bs4.BeautifulSoup) (import-outside-toplevel)
+src\scrapers\ca_ucc_scraper_playwright.py:118:8: R1702: Too many nested blocks (8/5) (too-many-nested-blocks)
+src\scrapers\ca_ucc_scraper_playwright.py:296:12: C0415: Import outside toplevel (traceback) (import-outside-toplevel)
+src\scrapers\ca_ucc_scraper_playwright.py:107:4: R0912: Too many branches (25/12) (too-many-branches)
+src\scrapers\ca_ucc_scraper_playwright.py:107:4: R0915: Too many statements (114/50) (too-many-statements)
+src\scrapers\ca_ucc_scraper_playwright.py:107:77: W0613: Unused argument 'max_results' (unused-argument)
+src\scrapers\ca_ucc_scraper_playwright.py:62:8: W0201: Attribute 'playwright' defined outside __init__ (attribute-defined-outside-init)
+src\scrapers\ca_ucc_scraper_playwright.py:8:0: W0611: Unused import os (unused-import)
+src\scrapers\ca_ucc_scraper_playwright.py:10:0: W0611: Unused Dict imported from typing (unused-import)
+src\scrapers\ca_ucc_scraper_playwright.py:10:0: W0611: Unused Optional imported from typing (unused-import)
+src\scrapers\ca_ucc_scraper_playwright.py:12:0: W0611: Unused import json (unused-import)
+************* Module src.scrapers.ca_ucc_scraper_scrapingbee
+src\scrapers\ca_ucc_scraper_scrapingbee.py:33:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:55:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:60:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:64:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:67:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:77:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:85:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:89:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:92:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:94:0: C0301: Line too long (126/100) (line-too-long)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:97:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:101:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:106:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:112:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:120:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:121:0: C0301: Line too long (114/100) (line-too-long)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:122:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:124:0: C0301: Line too long (112/100) (line-too-long)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:125:0: C0301: Line too long (102/100) (line-too-long)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:126:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:129:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:139:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:142:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:146:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:148:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:149:0: C0301: Line too long (109/100) (line-too-long)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:157:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:160:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:171:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:177:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:181:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:185:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:187:0: C0301: Line too long (108/100) (line-too-long)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:189:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:195:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:200:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:203:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:205:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:211:0: C0303: Trailing whitespace (trailing-whitespace)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:212:0: C0301: Line too long (114/100) (line-too-long)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:14:0: E0401: Unable to import 'aiohttp' (import-error)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:18:0: C0115: Missing class docstring (missing-class-docstring)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:18:0: R0902: Too many instance attributes (14/7) (too-many-instance-attributes)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:34:4: C0116: Missing function or method docstring (missing-function-docstring)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:53:0: C0115: Missing class docstring (missing-class-docstring)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:86:4: R0914: Too many local variables (21/15) (too-many-locals)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:88:8: C0415: Import outside toplevel (bs4.BeautifulSoup) (import-outside-toplevel)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:143:23: W0718: Catching too general exception Exception (broad-exception-caught)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:149:4: R0914: Too many local variables (21/15) (too-many-locals)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:206:15: W0718: Catching too general exception Exception (broad-exception-caught)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:179:16: C0415: Import outside toplevel (bs4.BeautifulSoup) (import-outside-toplevel)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:208:12: C0415: Import outside toplevel (traceback) (import-outside-toplevel)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:62:8: W0201: Attribute 'session' defined outside __init__ (attribute-defined-outside-init)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:7:0: W0611: Unused import asyncio (unused-import)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:8:0: W0611: Unused import re (unused-import)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:11:0: W0611: Unused Optional imported from typing (unused-import)
+src\scrapers\ca_ucc_scraper_scrapingbee.py:13:0: W0611: Unused import json (unused-import)
+************* Module main
+main.py:45:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:54:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:64:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:78:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:81:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:88:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:91:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:101:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:109:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:112:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:115:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:118:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:126:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:129:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:136:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:142:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:145:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:149:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:152:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:156:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:162:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:165:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:169:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:172:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:174:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:177:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:180:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:186:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:188:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:214:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:220:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:225:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:228:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:244:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:248:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:258:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:260:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:264:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:283:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:30:0: C0413: Import "from src.config import load_sites_config, get_site_by_id" should be placed at the top of the module (wrong-import-position)
+main.py:31:0: C0413: Import "from src.browser_automation import NYCACRISAutomation, scrape_nyc_acris" should be placed at the top of the module (wrong-import-position)
+main.py:32:0: C0413: Import "from src.pdf_extractor import PDFExtractor, FieldExtractor" should be placed at the top of the module (wrong-import-position)
+main.py:33:0: C0413: Import "from src.field_mapper import FieldMapper, MappedRecord" should be placed at the top of the module (wrong-import-position)
+main.py:34:0: C0413: Import "from src.accuracy_verifier import AccuracyVerifier, verify_records" should be placed at the top of the module (wrong-import-position)
+main.py:35:0: C0413: Import "from src.sheets_integration import GoogleSheetsIntegration, SheetWriteResult" should be placed at the top of the module (wrong-import-position)
+main.py:36:0: C0413: Import "from src.utils import logger, ensure_directories" should be placed at the top of the module (wrong-import-position)
+main.py:42:0: R0914: Too many local variables (33/15) (too-many-locals)
+main.py:75:24: W0621: Redefining name 'datetime' from outer scope (line 24) (redefined-outer-name)
+main.py:44:4: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+main.py:189:11: W0718: Catching too general exception Exception (broad-exception-caught)
+main.py:63:12: C0415: Import outside toplevel (src.scrapers.ca_ucc_scraper_playwright.CAUCCScraper) (import-outside-toplevel)
+main.py:103:23: W0718: Catching too general exception Exception (broad-exception-caught)
+main.py:75:24: W0404: Reimport 'datetime' (imported line 24) (reimported)
+main.py:75:24: C0415: Import outside toplevel (datetime.datetime, datetime.timedelta) (import-outside-toplevel)
+main.py:102:24: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+main.py:104:20: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+main.py:111:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+main.py:146:19: W0718: Catching too general exception Exception (broad-exception-caught)
+main.py:128:39: E1101: Instance of 'FieldExtractor' has no 'extract_all_fields' member (no-member)
+main.py:147:16: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+main.py:163:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+main.py:183:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+main.py:185:16: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+main.py:190:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+main.py:42:0: R0912: Too many branches (20/12) (too-many-branches)
+main.py:42:0: R0915: Too many statements (76/50) (too-many-statements)
+main.py:195:9: W0621: Redefining name 'request' from outer scope (line 284) (redefined-outer-name)
+main.py:249:8: W0621: Redefining name 'response' from outer scope (line 285) (redefined-outer-name)
+main.py:265:11: W0718: Catching too general exception Exception (broad-exception-caught)
+main.py:224:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+main.py:234:19: W0718: Catching too general exception Exception (broad-exception-caught)
+main.py:235:16: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+main.py:259:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+main.py:266:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+main.py:280:4: C0115: Missing class docstring (missing-class-docstring)
+main.py:281:8: C0116: Missing function or method docstring (missing-function-docstring)
+main.py:281:27: W0613: Unused argument 'silent' (unused-argument)
+main.py:280:4: R0903: Too few public methods (1/2) (too-few-public-methods)
+main.py:22:0: W0611: Unused import logging (unused-import)
+main.py:25:0: W0611: Unused List imported from typing (unused-import)
+main.py:30:0: W0611: Unused load_sites_config imported from src.config (unused-import)
+main.py:30:0: W0611: Unused get_site_by_id imported from src.config (unused-import)
+main.py:31:0: W0611: Unused NYCACRISAutomation imported from src.browser_automation (unused-import)
+main.py:33:0: W0611: Unused MappedRecord imported from src.field_mapper (unused-import)
+main.py:34:0: W0611: Unused AccuracyVerifier imported from src.accuracy_verifier (unused-import)
+main.py:35:0: W0611: Unused SheetWriteResult imported from src.sheets_integration (unused-import)
+main.py:1:0: R0801: Similar lines in 2 files
+==src.scrapers.ca_ucc_scraper:[17:59]
+==src.scrapers.ca_ucc_scraper_scrapingbee:[16:58]
+@dataclass
+class LienRecord:
+    site_id: str = "20"  # CA UCC Site
+    lien_or_receive_date: str = ""
+    amount: str = ""
+    lead_type: str = "Lien"  # Notice of Federal Tax Lien
+    lead_source: str = "777"
+    liability_type: str = "IRS"
+    business_personal: str = ""
+    company: str = ""
+    first_name: str = ""
+    last_name: str = ""
+    street: str = ""
+    city: str = ""
+    state: str = ""
+    zip_code: str = ""
+
+    def to_dict(self):
+        return {
+            "Site Id": self.site_id,
+            "LienOrReceiveDate": self.lien_or_receive_date,
+            "Amount": self.amount,
+            "LeadType": self.lead_type,
+            "LeadSource": self.lead_source,
+            "LiabilityType": self.liability_type,
+            "BusinessPersonal": self.business_personal,
+            "Company": self.company,
+            "FirstName": self.first_name,
+            "LastName": self.last_name,
+            "Street": self.street,
+            "City": self.city,
+            "State": self.state,
+            "Zip": self.zip_code
+        }
+
+
+class CAUCCScraper:
+    BASE_URL = "https://bizfileonline.sos.ca.gov/search/ucc"
+
+    def __init__(self, api_key: str = None):
+        self.api_key = api_key or os.getenv("SCRAPINGBEE_API_KEY")
+        if not self.api_key: (duplicate-code)
+main.py:1:0: R0801: Similar lines in 2 files
+==src.scrapers.ca_ucc_scraper:[17:57]
+==src.scrapers.ca_ucc_scraper_direct:[15:56]
+@dataclass
+class LienRecord:
+    site_id: str = "20"
+    lien_or_receive_date: str = ""
+    amount: str = ""
+    lead_type: str = "Lien"
+    lead_source: str = "777"
+    liability_type: str = "IRS"
+    business_personal: str = ""
+    company: str = ""
+    first_name: str = ""
+    last_name: str = ""
+    street: str = ""
+    city: str = ""
+    state: str = ""
+    zip_code: str = ""
+
+    def to_dict(self):
+        return {
+            "Site Id": self.site_id,
+            "LienOrReceiveDate": self.lien_or_receive_date,
+            "Amount": self.amount,
+            "LeadType": self.lead_type,
+            "LeadSource": self.lead_source,
+            "LiabilityType": self.liability_type,
+            "BusinessPersonal": self.business_personal,
+            "Company": self.company,
+            "FirstName": self.first_name,
+            "LastName": self.last_name,
+            "Street": self.street,
+            "City": self.city,
+            "State": self.state,
+            "Zip": self.zip_code
+        }
+
+
+class CAUCCScraper:
+    BASE_URL = "https://bizfileonline.sos.ca.gov/search/ucc"
+
+    def __init__(self, api_key: str = None):
+        # Try to use API key if available, but don't fail if ScrapingBee is exhausted (duplicate-code)
+main.py:1:0: R0801: Similar lines in 2 files
+==src.scrapers.ca_ucc_scraper_playwright:[14:55]
+==src.scrapers.ca_ucc_scraper_scrapingbee:[16:56]
+@dataclass
+class LienRecord:
+    site_id: str = "20"  # CA UCC Site
+    lien_or_receive_date: str = ""
+    amount: str = ""
+    lead_type: str = "Lien"  # Notice of Federal Tax Lien
+    lead_source: str = "777"
+    liability_type: str = "IRS"
+    business_personal: str = ""
+    company: str = ""
+    first_name: str = ""
+    last_name: str = ""
+    street: str = ""
+    city: str = ""
+    state: str = ""
+    zip_code: str = ""
+
+    def to_dict(self):
+        return {
+            "Site Id": self.site_id,
+            "LienOrReceiveDate": self.lien_or_receive_date,
+            "Amount": self.amount,
+            "LeadType": self.lead_type,
+            "LeadSource": self.lead_source,
+            "LiabilityType": self.liability_type,
+            "BusinessPersonal": self.business_personal,
+            "Company": self.company,
+            "FirstName": self.first_name,
+            "LastName": self.last_name,
+            "Street": self.street,
+            "City": self.city,
+            "State": self.state,
+            "Zip": self.zip_code
+        }
+
+
+class CAUCCScraper:
+    BASE_URL = "https://bizfileonline.sos.ca.gov/search/ucc"
+
+    def __init__(self, api_key: str = None): (duplicate-code)
+main.py:1:0: R0801: Similar lines in 2 files
+==src.scrapers.ca_ucc_scraper:[147:170]
+==src.scrapers.ca_ucc_scraper_scrapingbee:[99:123]
+            return records
+
+        # Try to find the results table
+        for table in tables:
+            rows = table.find_all('tr')
+            print(f"Table has {len(rows)} rows")
+
+            for i, row in enumerate(rows[1:]):  # Skip header
+                try:
+                    cells = row.find_all('td')
+                    if len(cells) < 4:
+                        continue
+
+                    # Extract cell text
+                    doc_type = cells[0].get_text(strip=True) if len(cells) > 0 else ""
+                    debtor = cells[1].get_text(strip=True) if len(cells) > 1 else ""
+                    file_number = cells[2].get_text(strip=True) if len(cells) > 2 else ""
+                    secured_party = cells[3].get_text(strip=True) if len(cells) > 3 else ""
+                    status = cells[4].get_text(strip=True) if len(cells) > 4 else ""
+                    dates = cells[5].get_text(strip=True) if len(cells) > 5 else ""
+
+                    print(f"Row {i}: Type='{doc_type}' | Debtor='{debtor[:30]}' | Secured='{secured_party[:30]}'")
+
+                    # Filter for IRS liens only (duplicate-code)
+main.py:1:0: R0801: Similar lines in 2 files
+==src.scrapers.ca_ucc_scraper:[171:183]
+==src.scrapers.ca_ucc_scraper_scrapingbee:[124:136]
+                    is_lien = "federal tax lien" in doc_type.lower() or "tax lien" in doc_type.lower()
+
+                    if not is_irs or not is_lien:
+                        continue
+
+                    record = {
+                        "site_id": "20",
+                        "document_type": doc_type,
+                        "debtor": debtor,
+                        "file_number": file_number,
+                        "secured_party": secured_party,
+                        "status": status, (duplicate-code)
+main.py:1:0: R0801: Similar lines in 2 files
+==src.scrapers.ca_ucc_scraper_direct:[78:89]
+==src.scrapers.ca_ucc_scraper_scrapingbee:[151:162]
+        if not from_date or not to_date:
+            today = datetime.now()
+            month_ago = today - timedelta(days=30)
+            to_date = today.strftime("%m/%d/%Y")
+            from_date = month_ago.strftime("%m/%d/%Y")
+
+        debug_info = []
+        debug_info.append(f"Date Range: {from_date} to {to_date}")
+
+        try:
+            # Simple fetch - just stealth proxy, no extract_rules (duplicate-code)
+main.py:1:0: R0801: Similar lines in 2 files
+==src.scrapers.ca_ucc_scraper:[198:209]
+==src.scrapers.ca_ucc_scraper_scrapingbee:[139:151]
+                    records.append(record)
+                    print(f"Γ£ô Found IRS lien: {debtor[:50]}")
+
+                except Exception as e:
+                    print(f"Error parsing row {i}: {e}")
+                    continue
+
+        return records
+
+    def _parse_with_regex(self, html: str) -> List[Dict]:
+        """Fallback regex parser if BeautifulSoup not available""" (duplicate-code)
+main.py:1:0: R0801: Similar lines in 2 files
+==src.scrapers.ca_ucc_scraper_playwright:[293:303]
+==src.scrapers.ca_ucc_scraper_scrapingbee:[205:215]
+        except Exception as e:
+            debug_info.append(f"ERROR: {str(e)}")
+            import traceback
+            debug_info.append(traceback.format_exc()[:500])
+            return [], debug_info
+
+    async def scrape(self, from_date: str = None, to_date: str = None, max_results: int = 50) -> List[LienRecord]:
+        """Main scraping method"""
+        records, _ = await self.scrape_debug(from_date, to_date, max_results)
+        return records (duplicate-code)
+main.py:1:0: R0801: Similar lines in 2 files
+==src.scrapers.ca_ucc_scraper:[110:115]
+==src.scrapers.ca_ucc_scraper_scrapingbee:[69:74]
+        scrapingbee_url = (
+            f"https://app.scrapingbee.com/api/v1/?"
+            f"api_key={self.api_key}&"
+            f"url={url}&"
+            f"render_js=true&" (duplicate-code)
+main.py:1:0: R0801: Similar lines in 2 files
+==src.scrapers.ca_ucc_scraper:[138:146]
+==src.scrapers.ca_ucc_scraper_scrapingbee:[89:98]
+        records = []
+        soup = BeautifulSoup(html, 'html.parser')
+
+        # Find result table rows
+        # Based on the selector user provided: #root > div > div.content > div > main > div.table-wrapper > table > tbody > tr
+        tables = soup.find_all('table')
+        print(f"Found {len(tables)} tables in HTML")
+
+        if not tables: (duplicate-code)
+main.py:1:0: R0801: Similar lines in 2 files
+==src.scrapers.ca_ucc_scraper_direct:[125:130]
+==src.scrapers.ca_ucc_scraper_scrapingbee:[162:167]
+            scrapingbee_url = (
+                f"https://app.scrapingbee.com/api/v1/?"
+                f"api_key={self.api_key}&"
+                f"url={self.BASE_URL}&"
+                f"render_js=true&" (duplicate-code)
+
+------------------------------------------------------------------
+Your code has been rated at 5.56/10 (previous run: 5.56/10, +0.00)
+

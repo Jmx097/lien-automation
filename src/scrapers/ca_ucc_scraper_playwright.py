@@ -6,11 +6,14 @@ Uses Playwright with stealth plugins to bypass detection
 
 import asyncio
 import os
+import tempfile
+import logging
 from datetime import datetime, timedelta
 from typing import List, Dict, Optional, Tuple
 from dataclasses import dataclass
 import json
 
+logger = logging.getLogger(__name__)
 
 @dataclass
 class LienRecord:
@@ -56,6 +59,8 @@ class CAUCCScraper:
         self.browser = None
         self.context = None
         self.page = None
+        # Use temp dir for artifacts, compatible with Windows/Linux
+        self.output_dir = os.getenv('OUTPUT_DIR', tempfile.gettempdir())
         
     async def __aenter__(self):
         from playwright.async_api import async_playwright
@@ -71,6 +76,10 @@ class CAUCCScraper:
         """Initialize browser with stealth settings"""
         from playwright.async_api import async_playwright
         
+        # Check env vars for debug settings
+        headless = os.getenv('HEADLESS', 'true').lower() == 'true'
+        slow_mo = int(os.getenv('SLOWMO', '0'))
+        
         # Launch browser with args to avoid detection
         browser_args = [
             '--disable-blink-features=AutomationControlled',
@@ -79,7 +88,8 @@ class CAUCCScraper:
         ]
         
         self.browser = await self.playwright.chromium.launch(
-            headless=True,
+            headless=headless,
+            slow_mo=slow_mo,
             args=browser_args
         )
         
@@ -104,6 +114,9 @@ class CAUCCScraper:
         
         self.page = await self.context.new_page()
         
+        # Add logging for console messages
+        self.page.on("console", lambda msg: logger.debug(f"Browser console: {msg.text}"))
+        
     async def scrape_debug(self, from_date: str = None, to_date: str = None, max_results: int = 50) -> Tuple[List[LienRecord], List[str]]:
         """Scrape with debug info"""
         if not from_date or not to_date:
@@ -114,6 +127,7 @@ class CAUCCScraper:
         
         debug_info = []
         debug_info.append(f"Date Range: {from_date} to {to_date}")
+        debug_info.append(f"Output Directory: {self.output_dir}")
         
         try:
             debug_info.append("Initializing Playwright with stealth...")
@@ -137,9 +151,9 @@ class CAUCCScraper:
             debug_info.append(f"HTML length: {len(html)} bytes")
             debug_info.append(f"HTML first 500: {html[:500]}...")
             
-            # Take screenshot for debugging (save to /tmp)
+            # Take screenshot for debugging
             try:
-                screenshot_path = "/tmp/ca_sos_screenshot.png"
+                screenshot_path = os.path.join(self.output_dir, "ca_sos_screenshot.png")
                 await self.page.screenshot(path=screenshot_path, full_page=True)
                 debug_info.append(f"✓ Screenshot saved to {screenshot_path}")
             except Exception as screenshot_error:
@@ -165,23 +179,55 @@ class CAUCCScraper:
                 if search_input:
                     debug_info.append("Found search input, filling...")
                     try:
-                        await search_input.fill('internal revenue service')
-                        debug_info.append("✓ Search input filled successfully")
+                        await search_input.fill('Internal Revenue Service')
+                        debug_info.append("✓ Search input filled")
                     except Exception as fill_error:
                         debug_info.append(f"✗ Failed to fill search input: {str(fill_error)}")
                         return [], debug_info
                     
-                    # Find and click submit - try multiple selectors
+                    # Click Advanced Search
+                    try:
+                        debug_info.append("Looking for Advanced Search toggle...")
+                        advanced_btn = await self.page.wait_for_selector('button.advanced-search-toggle, button:has-text("Advanced")', timeout=5000)
+                        if advanced_btn:
+                            await advanced_btn.click()
+                            debug_info.append("✓ Clicked Advanced Search")
+                            await asyncio.sleep(1)
+                            # Look for Date Fields
+                            # Identified via parse_html.py: field-date-FILING_DATEs, field-date-FILING_DATEe
+                            try:
+                                await self.page.fill('#field-date-FILING_DATEs', from_date)
+                                await self.page.fill('#field-date-FILING_DATEe', to_date)
+                                debug_info.append(f"✓ Filled filing dates: {from_date} - {to_date}")
+                            except Exception as date_error:
+                                 debug_info.append(f"✗ Failed to fill dates: {date_error}")
+
+                            # Look for Document Type checkbox/filter
+                            # Identified via parse_html.py: select#field-RECORD_TYPE_ID
+                            try:
+                                # Select 'Federal Tax Lien'
+                                select_elem = await self.page.query_selector('#field-RECORD_TYPE_ID')
+                                if select_elem:
+                                    # Iterate options to find exact match if needed, or just try selecting by label
+                                    await select_elem.select_option(label='Federal Tax Lien')
+                                    debug_info.append("✓ Selected 'Federal Tax Lien'")
+                                else:
+                                    debug_info.append("✗ Could not find Record Type select")
+                            except Exception as e:
+                                debug_info.append(f"Filter selection error: {e}")
+                                
+                    except Exception as adv_error:
+                        debug_info.append(f"Advanced search interaction failed: {str(adv_error)}")
+                    
+                    # Find and click submit
                     debug_info.append("Looking for submit button...")
                     
-                    # Try various selectors
+                    # Try various selectors for the search button
+                    # Identified via parse_html.py: button.advanced-search-button
                     selectors = [
+                        'button.advanced-search-button',
                         'button[type="submit"]',
-                        'input[type="submit"]', 
                         'button:has-text("Search")',
-                        'button:has-text("Submit")',
-                        'button.btn-primary',
-                        'button.search-button',
                         'button[class*="search"]',
                         'button',
                     ]
@@ -230,9 +276,10 @@ class CAUCCScraper:
                         
                         # Save HTML for debugging
                         try:
-                            with open('/tmp/ca_sos_results.html', 'w', encoding='utf-8') as f:
+                            html_path = os.path.join(self.output_dir, "ca_sos_results.html")
+                            with open(html_path, 'w', encoding='utf-8') as f:
                                 f.write(html)
-                            debug_info.append("✓ HTML saved to /tmp/ca_sos_results.html")
+                            debug_info.append(f"✓ HTML saved to {html_path}")
                         except Exception as save_error:
                             debug_info.append(f"Could not save HTML: {str(save_error)}")
                         
