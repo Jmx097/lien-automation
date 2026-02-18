@@ -11,21 +11,24 @@ if not os.path.exists(html_path):
 with open(html_path, 'r', encoding='utf-8') as f:
     soup = BeautifulSoup(f.read(), 'html.parser')
 
-print("--- INPUTS ---")
-for tag in soup.find_all('input'):
-    print(f"Tag: {tag.name}, Type: {tag.get('type')}, ID: {tag.get('id')}, Name: {tag.get('name')}, Placeholder: {tag.get('placeholder')}, Value: {tag.get('value')}")
+print(f"Page Title: {soup.title.string if soup.title else 'No Title'}")
 
-print("\n--- SELECTS ---")
-for tag in soup.find_all('select'):
-    print(f"Tag: {tag.name}, ID: {tag.get('id')}, Name: {tag.get('name')}, Label: {tag.get('aria-label')}")
-    options = tag.find_all('option')
-    print(f"  Options: {[opt.text.strip() for opt in options[:5]]}...")
+tables = soup.find_all('table')
+print(f"Tables found: {len(tables)}")
 
-print("\n--- BUTTONS ---")
-for tag in soup.find_all('button'):
-    print(f"Tag: {tag.name}, ID: {tag.get('id')}, Text: {tag.text.strip()[:30]}, Class: {tag.get('class')}")
+for i, table in enumerate(tables):
+    rows = table.find_all('tr')
+    print(f"Table {i} rows: {len(rows)}")
+    if len(rows) > 0:
+        headers = [th.text.strip() for th in rows[0].find_all('th')]
+        print(f"Headers: {headers}")
 
-print("\n--- LINKS (possible toggles) ---")
-for tag in soup.find_all('a'):
-    if 'advanced' in tag.text.lower() or 'filter' in tag.text.lower():
-        print(f"Tag: {tag.name}, Text: {tag.text.strip()}, Href: {tag.get('href')}")
+# Check for pagination
+page_links = soup.find_all('a', class_='page-link') # Common class, might vary
+print(f"Pagination links found: {len(page_links)}")
+for link in page_links:
+    print(f"Link: {link.text.strip()}, Href: {link.get('href')}")
+
+# Check for "No results" message
+if "no records found" in soup.text.lower() or "0 result" in soup.text.lower():
+    print("Likely NO RESULTS found.")

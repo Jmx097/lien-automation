@@ -31,6 +31,7 @@ class LienRecord:
     city: str = ""
     state: str = ""
     zip_code: str = ""
+    file_number: str = ""
     
     def to_dict(self):
         return {
@@ -47,7 +48,8 @@ class LienRecord:
             "Street": self.street,
             "City": self.city,
             "State": self.state,
-            "Zip": self.zip_code
+            "Zip": self.zip_code,
+            "FileNumber": self.file_number,
         }
 
 
@@ -55,11 +57,9 @@ class CAUCCScraper:
     BASE_URL = "https://bizfileonline.sos.ca.gov/search/ucc"
     
     def __init__(self, api_key=None):
-        # api_key parameter accepted for compatibility but not used
         self.browser = None
         self.context = None
         self.page = None
-        # Use temp dir for artifacts, compatible with Windows/Linux
         self.output_dir = os.getenv('OUTPUT_DIR', tempfile.gettempdir())
         
     async def __aenter__(self):
@@ -74,13 +74,10 @@ class CAUCCScraper:
         
     async def init_browser(self):
         """Initialize browser with stealth settings"""
-        from playwright.async_api import async_playwright
-        
-        # Check env vars for debug settings
-        headless = os.getenv('HEADLESS', 'true').lower() == 'true'
+        # MUST be non-headless — Incapsula blocks headless Chromium
+        headless = os.getenv('HEADLESS', 'false').lower() == 'true'
         slow_mo = int(os.getenv('SLOWMO', '0'))
         
-        # Launch browser with args to avoid detection
         browser_args = [
             '--disable-blink-features=AutomationControlled',
             '--disable-web-security',
@@ -93,7 +90,6 @@ class CAUCCScraper:
             args=browser_args
         )
         
-        # Create context with realistic viewport and user agent
         self.context = await self.browser.new_context(
             viewport={'width': 1920, 'height': 1080},
             user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -101,7 +97,6 @@ class CAUCCScraper:
             timezone_id='America/Los_Angeles',
         )
         
-        # Add stealth scripts
         await self.context.add_init_script("""
             Object.defineProperty(navigator, 'webdriver', {
                 get: () => undefined
@@ -113,238 +108,285 @@ class CAUCCScraper:
         """)
         
         self.page = await self.context.new_page()
-        
-        # Add logging for console messages
         self.page.on("console", lambda msg: logger.debug(f"Browser console: {msg.text}"))
         
-    async def scrape_debug(self, from_date: str = None, to_date: str = None, max_results: int = 50) -> Tuple[List[LienRecord], List[str]]:
-        """Scrape with debug info"""
+    async def _save_artifact(self, name: str, content: str = None):
+        """Save debug artifact (screenshot + optional HTML)."""
+        try:
+            ss = os.path.join(self.output_dir, f"{name}.png")
+            await self.page.screenshot(path=ss, full_page=True)
+            logger.debug(f"Screenshot → {ss}")
+        except Exception as e:
+            logger.debug(f"Screenshot failed: {e}")
+        if content is not None:
+            hp = os.path.join(self.output_dir, f"{name}.html")
+            with open(hp, 'w', encoding='utf-8') as f:
+                f.write(content)
+            logger.debug(f"HTML → {hp}")
+
+    # ------------------------------------------------------------------
+    # Core scraping flow
+    # ------------------------------------------------------------------
+    async def scrape_debug(self, from_date: str = None, to_date: str = None,
+                           max_results: int = 50, page_number: int = 1
+                           ) -> Tuple[List[LienRecord], List[str]]:
+        """
+        Full flow:
+        1. Navigate to UCC search
+        2. Click Advanced toggle
+        3. Fill search + date range + record type
+        4. Click Search (advanced-search-button)
+        5. Wait for results (React SPA — no <table>; rows are divs)
+        6. Parse visible rows
+        7. Optionally paginate to page_number
+        """
         if not from_date or not to_date:
             today = datetime.now()
-            three_months_ago = today - timedelta(days=90)
+            week_ago = today - timedelta(days=7)
             to_date = today.strftime("%m/%d/%Y")
-            from_date = three_months_ago.strftime("%m/%d/%Y")
+            from_date = week_ago.strftime("%m/%d/%Y")
         
-        debug_info = []
-        debug_info.append(f"Date Range: {from_date} to {to_date}")
-        debug_info.append(f"Output Directory: {self.output_dir}")
-        
-        try:
-            debug_info.append("Initializing Playwright with stealth...")
-            await self.init_browser()
-            
-            debug_info.append(f"Navigating to: {self.BASE_URL}")
-            await self.page.goto(self.BASE_URL, wait_until='networkidle', timeout=30000)
-            
-            # Wait a moment for any JS challenges to complete
-            await asyncio.sleep(3)
-            
-            # Get page info
-            title = await self.page.title()
-            debug_info.append(f"Page title: {title}")
-            
-            url = self.page.url
-            debug_info.append(f"Current URL: {url}")
-            
-            # Get HTML content
-            html = await self.page.content()
-            debug_info.append(f"HTML length: {len(html)} bytes")
-            debug_info.append(f"HTML first 500: {html[:500]}...")
-            
-            # Take screenshot for debugging
-            try:
-                screenshot_path = os.path.join(self.output_dir, "ca_sos_screenshot.png")
-                await self.page.screenshot(path=screenshot_path, full_page=True)
-                debug_info.append(f"✓ Screenshot saved to {screenshot_path}")
-            except Exception as screenshot_error:
-                debug_info.append(f"Screenshot failed: {str(screenshot_error)}")
-            
-            # Look for iframes
-            iframes = await self.page.query_selector_all('iframe')
-            debug_info.append(f"Iframes found: {len(iframes)}")
-            
-            for i, iframe in enumerate(iframes[:3]):
-                src = await iframe.get_attribute('src') or 'N/A'
-                debug_info.append(f"  Iframe {i}: {src[:100]}")
-            
-            # Try to find and fill the search form
-            try:
-                debug_info.append("Looking for search form...")
-                
-                # Wait for form elements
-                await self.page.wait_for_selector('input[type="text"]', timeout=10000)
-                
-                # Find the search input (usually first text input)
-                search_input = await self.page.query_selector('input[type="text"]')
-                if search_input:
-                    debug_info.append("Found search input, filling...")
-                    try:
-                        await search_input.fill('Internal Revenue Service')
-                        debug_info.append("✓ Search input filled")
-                    except Exception as fill_error:
-                        debug_info.append(f"✗ Failed to fill search input: {str(fill_error)}")
-                        return [], debug_info
-                    
-                    # Click Advanced Search
-                    try:
-                        debug_info.append("Looking for Advanced Search toggle...")
-                        advanced_btn = await self.page.wait_for_selector('button.advanced-search-toggle, button:has-text("Advanced")', timeout=5000)
-                        if advanced_btn:
-                            await advanced_btn.click()
-                            debug_info.append("✓ Clicked Advanced Search")
-                            await asyncio.sleep(1)
-                            # Look for Date Fields
-                            # Identified via parse_html.py: field-date-FILING_DATEs, field-date-FILING_DATEe
-                            try:
-                                await self.page.fill('#field-date-FILING_DATEs', from_date)
-                                await self.page.fill('#field-date-FILING_DATEe', to_date)
-                                debug_info.append(f"✓ Filled filing dates: {from_date} - {to_date}")
-                            except Exception as date_error:
-                                 debug_info.append(f"✗ Failed to fill dates: {date_error}")
+        log: List[str] = []
+        records: List[LienRecord] = []
 
-                            # Look for Document Type checkbox/filter
-                            # Identified via parse_html.py: select#field-RECORD_TYPE_ID
-                            try:
-                                # Select 'Federal Tax Lien'
-                                select_elem = await self.page.query_selector('#field-RECORD_TYPE_ID')
-                                if select_elem:
-                                    # Iterate options to find exact match if needed, or just try selecting by label
-                                    await select_elem.select_option(label='Federal Tax Lien')
-                                    debug_info.append("✓ Selected 'Federal Tax Lien'")
-                                else:
-                                    debug_info.append("✗ Could not find Record Type select")
-                            except Exception as e:
-                                debug_info.append(f"Filter selection error: {e}")
-                                
-                    except Exception as adv_error:
-                        debug_info.append(f"Advanced search interaction failed: {str(adv_error)}")
-                    
-                    # Find and click submit
-                    debug_info.append("Looking for submit button...")
-                    
-                    # Try various selectors for the search button
-                    # Identified via parse_html.py: button.advanced-search-button
-                    selectors = [
-                        'button.advanced-search-button',
-                        'button[type="submit"]',
-                        'button:has-text("Search")',
-                        'button[class*="search"]',
-                        'button',
-                    ]
-                    
-                    submit_btn = None
-                    for selector in selectors:
-                        submit_btn = await self.page.query_selector(selector)
-                        if submit_btn:
-                            debug_info.append(f"Found submit button with selector: {selector}")
-                            break
-                    
-                    debug_info.append(f"Submit button found: {submit_btn is not None}")
-                    
-                    if submit_btn:
-                        debug_info.append("Clicking submit button...")
-                        try:
-                            # Wait for button to be enabled
-                            debug_info.append("Waiting for button to be enabled...")
-                            await asyncio.sleep(2)
-                            
-                            # Check if button is enabled
-                            is_enabled = await submit_btn.is_enabled()
-                            debug_info.append(f"Button enabled: {is_enabled}")
-                            
-                            if not is_enabled:
-                                debug_info.append("Button still disabled, trying Enter key...")
-                                # Press Tab then Enter to trigger form validation
-                                await search_input.press('Tab')
-                                await asyncio.sleep(1)
-                                await self.page.keyboard.press('Enter')
-                                debug_info.append("✓ Enter key pressed")
-                            else:
-                                await submit_btn.click()
-                                debug_info.append("✓ Submit button clicked")
-                        except Exception as click_error:
-                            debug_info.append(f"✗ Submit click failed: {str(click_error)}")
-                            return [], debug_info
-                        
-                        # Wait for results to load
-                        debug_info.append("Waiting 8 seconds for results...")
-                        await asyncio.sleep(8)
-                        
-                        # Check for results
-                        html = await self.page.content()
-                        debug_info.append(f"After search - HTML length: {len(html)} bytes")
-                        
-                        # Save HTML for debugging
-                        try:
-                            html_path = os.path.join(self.output_dir, "ca_sos_results.html")
-                            with open(html_path, 'w', encoding='utf-8') as f:
-                                f.write(html)
-                            debug_info.append(f"✓ HTML saved to {html_path}")
-                        except Exception as save_error:
-                            debug_info.append(f"Could not save HTML: {str(save_error)}")
-                        
-                        # Get new URL
-                        new_url = self.page.url
-                        debug_info.append(f"URL after search: {new_url}")
-                        
-                        # Check for error messages
-                        if 'error' in html.lower() or 'no results' in html.lower():
-                            debug_info.append("WARNING: Possible error or no results message")
-                        
-                        # Parse results
-                        from bs4 import BeautifulSoup
-                        soup = BeautifulSoup(html, 'html.parser')
-                        tables = soup.find_all('table')
-                        debug_info.append(f"Tables found after search: {len(tables)}")
-                        
-                        # Look for result rows
-                        rows = soup.find_all('tr')
-                        debug_info.append(f"Total rows found: {len(rows)}")
-                        
-                        # Check for specific text patterns
-                        if 'internal revenue' in html.lower():
-                            debug_info.append("✓ Page contains 'internal revenue' text")
-                        if 'lien' in html.lower():
-                            debug_info.append(f"✓ Page contains 'lien' text ({html.lower().count('lien')} times)")
-                        
-                        # Try to extract any visible text from result area
-                        result_divs = soup.find_all('div', class_=lambda x: x and ('result' in x.lower() if x else False))
-                        debug_info.append(f"Result divs found: {len(result_divs)}")
-                        
-                        # Look for data rows with specific patterns
-                        data_rows = []
-                        for table in tables:
-                            for row in table.find_all('tr'):
-                                cells = row.find_all(['td', 'th'])
-                                if len(cells) >= 3:  # At least 3 columns
-                                    row_text = ' '.join([cell.get_text(strip=True) for cell in cells])
-                                    if 'internal revenue' in row_text.lower() or 'lien' in row_text.lower():
-                                        data_rows.append(row_text[:100])
-                        
-                        if data_rows:
-                            debug_info.append(f"✓ Found {len(data_rows)} data rows matching criteria")
-                            for i, row_text in enumerate(data_rows[:3]):
-                                debug_info.append(f"  Row {i}: {row_text}")
-                        else:
-                            # Try to find any divs with substantial content
-                            content_divs = soup.find_all('div', text=lambda t: t and len(t.strip()) > 50)
-                            debug_info.append(f"Content divs (>50 chars): {len(content_divs)}")
-                            for i, div in enumerate(content_divs[:3]):
-                                text = div.get_text(strip=True)[:150]
-                                debug_info.append(f"  Content {i}: {text}")
-                        
+        def L(msg):
+            log.append(msg)
+            logger.info(msg)
+
+        try:
+            L(f"Date range: {from_date} → {to_date}  |  page={page_number}")
+            await self.init_browser()
+
+            # --- Step 1: Navigate ---
+            L("➜ Navigating to UCC search …")
+            await self.page.goto(self.BASE_URL, wait_until='networkidle', timeout=30000)
+            await asyncio.sleep(3)  # let Incapsula JS challenge resolve
+            await self._save_artifact("01_loaded", await self.page.content())
+
+            # --- Step 2: Click Advanced FIRST ---
+            L("➜ Clicking Advanced toggle …")
+            adv_btn = await self.page.wait_for_selector(
+                'button.advanced-search-toggle', timeout=10000)
+            if not adv_btn:
+                raise RuntimeError("Advanced toggle not found — Incapsula may have blocked the page")
+            await adv_btn.click()
+            await asyncio.sleep(1)
+            L("  ✓ Advanced panel open")
+
+            # --- Step 3a: Fill search text ---
+            L("➜ Filling search text …")
+            search_input = await self.page.wait_for_selector(
+                'input[placeholder*="Search by name"]', timeout=5000)
+            if not search_input:
+                # Fallback
+                search_input = await self.page.query_selector('input[type="text"]')
+            if not search_input:
+                raise RuntimeError("Search input not found")
+            await search_input.fill('Internal Revenue Service')
+            L("  ✓ Search text filled")
+
+            # --- Step 3b: Set Record Type to "Federal Tax Lien" ---
+            L("➜ Setting Record Type …")
+            try:
+                select_el = await self.page.wait_for_selector(
+                    '#field-RECORD_TYPE_ID', timeout=5000)
+                await select_el.select_option(label='Federal Tax Lien')
+                L("  ✓ Record type = Federal Tax Lien")
             except Exception as e:
-                debug_info.append(f"Form interaction failed: {str(e)}")
+                L(f"  ✗ Record type failed: {e}")
+
+            # --- Step 3c: Fill date range ---
+            L("➜ Filling date range …")
+            try:
+                ds = await self.page.wait_for_selector(
+                    '#field-date-FILING_DATEs', timeout=5000)
+                de = await self.page.wait_for_selector(
+                    '#field-date-FILING_DATEe', timeout=5000)
+                # Clear first, then type char-by-char (React controlled inputs)
+                await ds.click(click_count=3)
+                await ds.type(from_date, delay=50)
+                await de.click(click_count=3)
+                await de.type(to_date, delay=50)
+                L(f"  ✓ Dates filled: {from_date} – {to_date}")
+            except Exception as e:
+                L(f"  ✗ Date fill failed: {e}")
+
+            await self._save_artifact("02_form_filled", await self.page.content())
+
+            # --- Step 4: Click the advanced-panel Search button ---
+            L("➜ Clicking Search …")
+            search_btn = await self.page.query_selector('button.advanced-search-button')
+            if not search_btn:
+                # Fallback
+                search_btn = await self.page.query_selector('button:has-text("Search")')
+            if not search_btn:
+                raise RuntimeError("Search button not found")
             
-            return [], debug_info
+            # Make sure button is enabled
+            await asyncio.sleep(0.5)
+            await search_btn.click()
+            L("  ✓ Search clicked")
+
+            # --- Step 5: Wait for results (React SPA) ---
+            L("➜ Waiting for results …")
+            # The SPA renders results as a list of anchor/div rows — not <table>.
+            # Primary: wait for any .record-row, .search-result, or a link containing
+            # "/detail/ucc" which is the detail page pattern.
+            # Fallback: wait for the error message about >1000 results, or "no results".
+            got_results = False
+            try:
+                await self.page.wait_for_selector(
+                    'a[href*="/detail/"], .record-row, .search-result-item, '
+                    '.results-list .result, [class*="result-row"]',
+                    timeout=15000)
+                got_results = True
+                L("  ✓ Result rows detected")
+            except Exception:
+                L("  ! Primary result selector timed out — checking for error …")
+                # Check for >1000 error
+                error_el = await self.page.query_selector('h3:has-text("more than 1,000")')
+                if error_el:
+                    L("  ✗ ERROR: >1,000 results — narrow the date range")
+                    await self._save_artifact("03_error", await self.page.content())
+                    return [], log
+                # Maybe just slow
+                await asyncio.sleep(5)
+                got_results = True  # try parsing anyway
+
+            await self._save_artifact("03_results", await self.page.content())
+
+            # Save final URL for verification
+            final_url = self.page.url
+            L(f"  URL: {final_url}")
+            url_path = os.path.join(self.output_dir, "final_url.txt")
+            with open(url_path, 'w') as f:
+                f.write(final_url)
+
+            if not got_results:
+                L("No results to process.")
+                return [], log
+
+            # --- Step 5b: Paginate if needed ---
+            if page_number > 1:
+                L(f"➜ Paginating to page {page_number} …")
+                for _ in range(page_number - 1):
+                    next_btn = await self.page.query_selector(
+                        'button:has-text("Next"), a:has-text("Next"), '
+                        '[class*="next"], [aria-label="Next"]')
+                    if next_btn:
+                        await next_btn.click()
+                        await asyncio.sleep(3)
+                        L(f"  ✓ Clicked Next")
+                    else:
+                        L("  ✗ No Next button — already on last page")
+                        break
+                await self._save_artifact(f"03_page{page_number}", await self.page.content())
+
+            # --- Step 6: Parse result rows ---
+            L("➜ Parsing result rows …")
+            html = await self.page.content()
+            from bs4 import BeautifulSoup
+            soup = BeautifulSoup(html, 'html.parser')
+
+            # Try multiple patterns to find result rows
+            # Pattern A: <a href="/detail/ucc/...">
+            detail_links = soup.find_all('a', href=lambda h: h and '/detail/' in h)
+            L(f"  Detail links found: {len(detail_links)}")
+
+            # Pattern B: rows with class containing 'record' or 'result'
+            row_divs = soup.find_all('div', class_=lambda c: c and ('record' in str(c).lower() or 'result' in str(c).lower()))
+            L(f"  Result divs found: {len(row_divs)}")
+
+            # Pattern C: table rows (unlikely but fallback)
+            table_rows = soup.find_all('tr')
+            L(f"  Table rows found: {len(table_rows)}")
+
+            # Use whatever pattern found results
+            if detail_links:
+                for i, link in enumerate(detail_links[:max_results]):
+                    href = link.get('href', '')
+                    text = link.get_text(strip=True)[:100]
+                    L(f"  Row {i}: {text}  →  {href}")
+                    record = LienRecord(file_number=href.split('/')[-1] if '/' in href else '')
+                    records.append(record)
+            elif row_divs:
+                for i, div in enumerate(row_divs[:max_results]):
+                    text = div.get_text(strip=True)[:100]
+                    L(f"  Row {i}: {text}")
+                    records.append(LienRecord())
+            else:
+                L("  ✗ No result rows found with any selector pattern")
+                # Dump a broader DOM inventory for next debug iteration
+                all_classes = set()
+                for el in soup.find_all(True):
+                    cls = el.get('class')
+                    if cls:
+                        all_classes.update(cls)
+                interesting = [c for c in sorted(all_classes) if any(k in c.lower() for k in ['result', 'record', 'row', 'list', 'item', 'detail', 'lien'])]
+                L(f"  Interesting CSS classes: {interesting[:20]}")
+
+            # --- Step 7: Detail / History / Download (if rows found) ---
+            if records and detail_links:
+                L("➜ Opening first detail page for discovery …")
+                first_link = detail_links[0]
+                href = first_link.get('href', '')
+                if href:
+                    detail_url = href if href.startswith('http') else f"https://bizfileonline.sos.ca.gov{href}"
+                    await self.page.goto(detail_url, wait_until='networkidle', timeout=15000)
+                    await asyncio.sleep(2)
+                    detail_html = await self.page.content()
+                    await self._save_artifact("04_detail", detail_html)
+                    L(f"  Detail URL: {self.page.url}")
+
+                    # Update final_url.txt
+                    with open(url_path, 'w') as f:
+                        f.write(self.page.url)
+
+                    # Look for "View History" button
+                    history_btn = await self.page.query_selector(
+                        'button:has-text("History"), a:has-text("History"), '
+                        '[class*="history"]')
+                    if history_btn:
+                        L("  ✓ Found History button — clicking …")
+                        await history_btn.click()
+                        await asyncio.sleep(2)
+                        await self._save_artifact("05_history", await self.page.content())
+                        L(f"  History URL: {self.page.url}")
+
+                        # Look for download link
+                        download_link = await self.page.query_selector(
+                            'a:has-text("Download"), button:has-text("Download"), '
+                            'a[href*=".pdf"], a[href*="download"]')
+                        if download_link:
+                            dl_href = await download_link.get_attribute('href') or ''
+                            L(f"  ✓ Download link found: {dl_href}")
+                        else:
+                            L("  ✗ No download link found on History page")
+                    else:
+                        L("  ✗ No History button found on detail page")
+                        # Dump buttons for debugging
+                        btns = await self.page.query_selector_all('button, a')
+                        btn_texts = []
+                        for b in btns[:20]:
+                            t = await b.text_content()
+                            btn_texts.append(t.strip()[:40] if t else '')
+                        L(f"  Buttons on detail page: {btn_texts}")
+
+            L(f"✓ Done. {len(records)} records found.")
+            return records, log
             
         except Exception as e:
-            debug_info.append(f"ERROR: {str(e)}")
+            log.append(f"ERROR: {str(e)}")
             import traceback
-            debug_info.append(traceback.format_exc()[:500])
-            return [], debug_info
+            log.append(traceback.format_exc()[:500])
+            try:
+                await self._save_artifact("error", await self.page.content())
+            except:
+                pass
+            return records, log
         
-    async def scrape(self, from_date: str = None, to_date: str = None, max_results: int = 50) -> List[LienRecord]:
+    async def scrape(self, from_date: str = None, to_date: str = None,
+                     max_results: int = 50) -> List[LienRecord]:
         """Main scraping method"""
         records, _ = await self.scrape_debug(from_date, to_date, max_results)
         return records
