@@ -79,11 +79,12 @@ class MappedRecord:
 class FieldMapper:
     """Map extracted PDF fields to standardized format per Mapping Guide"""
     
-    # Site ID mapping
+    # Site ID mapping - must match config/sites.json
     SITE_IDS = {
         'nyc_acris': '12',
         'cook_county': '10',
         'ca_sos': '20',
+        'dallas_county': '11',
     }
     
     # Liability types per site
@@ -91,6 +92,7 @@ class FieldMapper:
         'nyc_acris': 'IRS',
         'cook_county': 'IRS',
         'ca_sos': 'IRS',
+        'dallas_county': 'IRS',
     }
     
     def __init__(self, site_key: str):
@@ -189,12 +191,14 @@ class FieldMapper:
         return date_str
         
     def _map_amount(self, fields: Dict, raw_text: str) -> MappedField:
-        """Map amount field - remove $ and commas"""
+        """Map amount field - remove $, commas, and .00 decimals"""
         amount_value = fields.get('amount')
         
         if amount_value:
-            # Clean amount
+            # Clean amount - remove $ and commas
             cleaned = re.sub(r'[$,]', '', amount_value)
+            # Remove .00 decimal suffix for whole numbers
+            cleaned = re.sub(r'\.00$', '', cleaned)
             # Validate it's a number
             try:
                 float(cleaned)
