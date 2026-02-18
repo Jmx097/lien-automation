@@ -13,3 +13,4 @@ requests>=2.31.0
 functions-framework>=3.5.0
 beautifulsoup4==4.12.3
 aiohttp==3.9.1
+python-dotenv>=1.0.0
